@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/C:/Users/Liraz/Desktop/לימודים/גאוה/WSDL%201.0/WSDL%201.0/MonopolyWebServiceService.wsdl" uri="src/conf/xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService.wsdl"/>
+    <system systemId="file:/C:/Users/Liraz/Desktop/לימודים/גאוה/WSDL%201.0/WSDL%201.0/MonopolyWebServiceService_schema1.xsd" uri="src/conf/xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService_schema1.xsd"/>
+    <system systemId="file:/C:/Users/Liraz/Documents/NetBeansProjects/MonopolyWebApp/MonopolyWebApp/MonopolyWebApp/../../../../../Desktop/לימודים/גאוה/XML%20and%20XSD%20v1.0/monopoly_config.xsd" uri="src/conf/xml-resources/jaxb/monopoly/monopoly_config.xsd"/>
+</catalog>
