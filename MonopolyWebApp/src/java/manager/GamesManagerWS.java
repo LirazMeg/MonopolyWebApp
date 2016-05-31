@@ -3,18 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game.ws;
+package manager;
 
-import javax.jws.WebService;
-import manager.GamesManagerWS;
+import java.util.HashMap;
+import models.Player;
 
 /**
  *
  * @author Liraz
  */
-@WebService(serviceName = "MonopolyWebServiceService", portName = "MonopolyWebServicePort", endpointInterface = "ws.monopoly.MonopolyWebService", targetNamespace = "http://monopoly.ws/", wsdlLocation = "WEB-INF/wsdl/gameWS/MonopolyWebServiceService.wsdl")
-public class gameWS {
- private GamesManagerWS manager = new GamesManagerWS();
+public class GamesManagerWS {
+
+    private final HashMap<String, MonopolyWS> gamesContainer = new HashMap<>();
+    private final HashMap<Integer, Player> playersContainer = new HashMap<>();
+    private final HashMap<Integer, String> playersIdAsGameName = new HashMap<>();
+    Integer idPlayerCounter = 0;
+
     public java.util.List<ws.monopoly.Event> getEvents(int eventId, int playerId) throws ws.monopoly.InvalidParameters_Exception {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");
@@ -69,5 +73,5 @@ public class gameWS {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
 }

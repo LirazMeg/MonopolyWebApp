@@ -19,7 +19,6 @@ public class MonopolyModel {
     private Surpries surpries;
     private Warrant warrant;
 
-
     public MonopolyModel() {
     }
 
@@ -61,7 +60,7 @@ public class MonopolyModel {
                 if (currentSquare.getType().equals(SquareType.Type.CITY)
                         || currentSquare.getType().equals(SquareType.Type.TRANSPORTATION)
                         || currentSquare.getType().equals(SquareType.Type.UTILITY)) {
-                   
+
                     if (currentSquare.getAsset().isIsHaveOwner()) {
                         if (currentSquare.getAsset().getOwner().equals(currentPlayer)) {
                             currentSquare.getAsset().setDoNotHaveOwner();
@@ -85,6 +84,7 @@ public class MonopolyModel {
     public Warrant getWarrant() {
         return warrant;
     }
+
 
 //========================Surpries==============
     public static class Surpries {
