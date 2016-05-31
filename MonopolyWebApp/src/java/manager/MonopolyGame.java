@@ -29,6 +29,7 @@ import models.SquareType;
  */
 public class MonopolyGame {
 
+    private static final String CUMPUTER_PLAYER = "CumputerPlayer";
     private MonopolyModel monopolyGame = null;
     private List<Player> players;
     private Player currentPlayer;
@@ -109,7 +110,6 @@ public class MonopolyGame {
         this.currentPlayer = currentPlayer;
     }
 
-
     public int[] rollTheDice() {
         int[] res = new int[2];
         res[0] = (int) ((Math.random() * (6 - 1 + 1)) + 1);
@@ -182,7 +182,6 @@ public class MonopolyGame {
         }
     }
 
-
     String getGameName() {
         return this.gameName;
     }
@@ -205,21 +204,16 @@ public class MonopolyGame {
         this.joinNumber = joinNumber;
         this.gameName = name;
     }
-    
-    public Player addPlayerToGame(String playerName, boolean isHumen)
-    {
+
+    public Player addPlayerToGame(String playerName, boolean isHumen) {
         Player playerToAdd = null;
-        if(isHumen){
-        playerToAdd = new HumanPlayer(gameName);
+        if (isHumen) {
+            playerToAdd = new HumanPlayer(playerName);
+            this.numOfHumanPlayers++;
+        } else {
+            playerToAdd = new ComputerPlayer(CUMPUTER_PLAYER + this.numComputerizedPlayers + 1);
+            this.numComputerizedPlayers++;
         }
-//        
-//        playerToAdd.addTileToPack(gamePack);
-//        playersList.add(playerToAdd);
-//        if (!playerToAdd.isComputer())
-//        {
-//            joinNumber++;
-//        }
-        
         return playerToAdd;
     }
 }
