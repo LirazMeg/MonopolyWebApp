@@ -5,8 +5,6 @@
  */
 package models;
 
-
-
 /**
  *
  * @author Liraz
