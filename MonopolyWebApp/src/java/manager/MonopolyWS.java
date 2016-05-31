@@ -5,6 +5,7 @@
  */
 package manager;
 
+import game.wsService.UtilitiesWS;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,23 +13,26 @@ import java.util.Timer;
 import javax.xml.bind.JAXBException;
 import models.MonopolyModel;
 import ws.monopoly.Event;
+import ws.monopoly.EventType;
 import ws.monopoly.GameDetails;
+import ws.monopoly.GameStatus;
 
 /**
  *
  * @author Liraz
  */
 class MonopolyWS {
+
     private MonopolyGame spesificGame;
     private List<Event> events;
     private GameDetails details;
     private Timer timer;
     public static final int TIME = 60000;
 
-    public static final int ZERO  = 0;
+    public static final int ZERO = 0;
 
     public MonopolyWS() throws JAXBException, FileNotFoundException, Exception {
-     this.spesificGame = new MonopolyGame();
+        this.spesificGame = new MonopolyGame();
         this.events = new ArrayList<>();
         this.details = new GameDetails();
         this.timer = new Timer();
@@ -49,14 +53,22 @@ class MonopolyWS {
 
         return resEventsList;
     }
-//
-//        public void setGameDetails(GameStatus status , boolean isLoadedFromXml)
-//    {
-//        details.setName(spesificGame.getGameName());
-//        details.setStatus(status);
-//        details.setHumanPlayers(spesificGame.getHumanPlayers());
-//        details.setComputerizedPlayers(spesificGame.getComputerizedPlayers());
-//        details.setJoinedHumanPlayers(spesificGame.getJoinNumber());
-//       
-//    }
+
+    public void setGameDetails(GameStatus status, boolean isLoadedFromXml) {
+        details.setName(spesificGame.getGameName());
+        details.setStatus(status);
+        details.setHumanPlayers(spesificGame.getHumanPlayers());
+        details.setComputerizedPlayers(spesificGame.getComputerizedPlayers());
+        details.setJoinedHumanPlayers(spesificGame.getJoinNumber());
+    }
+
+    public void createGame(int computerizedPlayers, int humanPlayers, String name) {
+        spesificGame.createGameWS(computerizedPlayers, humanPlayers, ZERO, name);
+        setGameDetails(GameStatus.WAITING, false);
+    }
+    
+     public void addEvents(EventType type ,int value, String playerName)
+    {
+        events.add(UtilitiesWS.createEvent(events.size(), type, value, playerName));
+    }
 }
