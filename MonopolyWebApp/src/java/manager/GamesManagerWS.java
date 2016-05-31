@@ -8,6 +8,7 @@ package manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import models.Player;
 import ws.monopoly.InvalidParameters_Exception;
 
@@ -59,8 +60,14 @@ public class GamesManagerWS {
     }
 
     public java.util.List<java.lang.String> getWaitingGames() {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        List<String> waitingGames = new ArrayList<>();
+
+        for (Map.Entry<String, MonopolyWS> entry : gamesContainer.entrySet()) {
+//            if (entry.getValue().isGameWait()) {
+//                waitingGames.add(entry.getValue().getGameDetails().getName());
+//            }
+        }
+        return waitingGames;
     }
 
     public int joinGame(java.lang.String gameName, java.lang.String playerName) throws ws.monopoly.GameDoesNotExists_Exception, ws.monopoly.InvalidParameters_Exception {

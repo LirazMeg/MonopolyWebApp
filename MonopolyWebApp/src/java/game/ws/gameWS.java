@@ -40,8 +40,7 @@ public class gameWS {
     }
 
     public java.util.List<java.lang.String> getWaitingGames() {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return manager.getWaitingGames();
     }
 
     public int joinGame(java.lang.String gameName, java.lang.String playerName) throws ws.monopoly.GameDoesNotExists_Exception, ws.monopoly.InvalidParameters_Exception {
