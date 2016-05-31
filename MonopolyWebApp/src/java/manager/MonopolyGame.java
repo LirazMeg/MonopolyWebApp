@@ -209,9 +209,9 @@ public class MonopolyGame {
     public Player addPlayerToGame(String playerName, boolean isHumen)
     {
         Player playerToAdd = null;
-//        if(isHumen){
-//        playerToAdd = new HumanPlayer(gameName);
-//        }
+        if(isHumen){
+        playerToAdd = new HumanPlayer(gameName);
+        }
 //        
 //        playerToAdd.addTileToPack(gamePack);
 //        playersList.add(playerToAdd);
