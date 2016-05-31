@@ -5,8 +5,11 @@
  */
 package manager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import models.Player;
+import ws.monopoly.InvalidParameters_Exception;
 
 /**
  *
@@ -20,18 +23,29 @@ public class GamesManagerWS {
     Integer idPlayerCounter = 0;
 
     public java.util.List<ws.monopoly.Event> getEvents(int eventId, int playerId) throws ws.monopoly.InvalidParameters_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        String gameName;
+        List<ws.monopoly.Event> events = new ArrayList<>();
+
+        if (playersIdAsGameName.containsKey(playerId)) {
+            gameName = playersIdAsGameName.get(playerId);
+            if (gamesContainer.containsKey(gameName)) {
+                events = gamesContainer.get(gameName).getEvents(eventId);
+            } else {
+                throw new InvalidParameters_Exception("Game: " + gameName + " is not exist .", null);
+            }
+        } else {
+            throw new InvalidParameters_Exception("PlayerId: " + playerId + " is not exist .", null);
+        }
+
+        return events;
     }
 
     public java.lang.String getBoardSchema() {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return "monopoly_config";
     }
 
     public java.lang.String getBoardXML() {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return "monopoly_config";
     }
 
     public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) throws ws.monopoly.DuplicateGameName_Exception, ws.monopoly.InvalidParameters_Exception {

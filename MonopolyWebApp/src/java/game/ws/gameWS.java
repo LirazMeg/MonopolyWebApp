@@ -14,20 +14,19 @@ import manager.GamesManagerWS;
  */
 @WebService(serviceName = "MonopolyWebServiceService", portName = "MonopolyWebServicePort", endpointInterface = "ws.monopoly.MonopolyWebService", targetNamespace = "http://monopoly.ws/", wsdlLocation = "WEB-INF/wsdl/gameWS/MonopolyWebServiceService.wsdl")
 public class gameWS {
- private GamesManagerWS manager = new GamesManagerWS();
+
+    private GamesManagerWS manager = new GamesManagerWS();
+
     public java.util.List<ws.monopoly.Event> getEvents(int eventId, int playerId) throws ws.monopoly.InvalidParameters_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return this.manager.getEvents(eventId, playerId);
     }
 
     public java.lang.String getBoardSchema() {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return this.manager.getBoardSchema();
     }
 
     public java.lang.String getBoardXML() {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return this.manager.getBoardXML();
     }
 
     public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) throws ws.monopoly.DuplicateGameName_Exception, ws.monopoly.InvalidParameters_Exception {
@@ -69,5 +68,5 @@ public class gameWS {
         //TODO implement this method
         throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
 }

@@ -28,7 +28,7 @@
     </target>
     <target name="wsimport-service-gameWS" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/service/gameWS"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/service/gameWS" destdir="${build.generated.dir}/jax-wsCache/service/gameWS" wsdl="${basedir}/${conf-dir}xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" xnocompile="true" xendorsed="true">
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/service/gameWS" destdir="${build.generated.dir}/jax-wsCache/service/gameWS" wsdl="${basedir}/${conf-dir}xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService.wsdl" catalog="catalog.xml" extension="true" verbose="true" fork="false" xnocompile="true" xendorsed="true">
             <depends file="${basedir}/${conf-dir}xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService.wsdl"/>
             <produces dir="${build.generated.dir}/jax-wsCache/service/gameWS"/>
         </wsimport>
