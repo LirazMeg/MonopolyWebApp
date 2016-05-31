@@ -63,9 +63,9 @@ public class GamesManagerWS {
         List<String> waitingGames = new ArrayList<>();
 
         for (Map.Entry<String, MonopolyWS> entry : gamesContainer.entrySet()) {
-//            if (entry.getValue().isGameWait()) {
-//                waitingGames.add(entry.getValue().getGameDetails().getName());
-//            }
+            if (entry.getValue().isGameWait()) {
+                waitingGames.add(entry.getValue().getGameDetails().getName());
+            }
         }
         return waitingGames;
     }

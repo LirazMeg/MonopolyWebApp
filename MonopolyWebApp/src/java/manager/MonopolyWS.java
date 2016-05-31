@@ -66,9 +66,16 @@ class MonopolyWS {
         spesificGame.createGameWS(computerizedPlayers, humanPlayers, ZERO, name);
         setGameDetails(GameStatus.WAITING, false);
     }
-    
-     public void addEvents(EventType type ,int value, String playerName)
-    {
+
+    public void addEvents(EventType type, int value, String playerName) {
         events.add(UtilitiesWS.createEvent(events.size(), type, value, playerName));
+    }
+
+    public GameDetails getGameDetails() {
+        return this.details;
+    }
+
+    public boolean isGameWait() {
+        return details.getStatus().equals(GameStatus.WAITING);
     }
 }
