@@ -29,13 +29,13 @@ import models.SquareType;
  */
 public class MonopolyGame {
 
+    final static int NUM_START_SQUARE = 1;
+    final static int ONE = 1;
     private MonopolyModel monopolyGame = null;
     private List<Player> players;
     private Player currentPlayer;
     private int pleyerIndex;
     private FileManager filesManager;
-    final static int NUM_START_SQUARE = 1;
-    final static int ONE = 1;
     boolean IsGameOver;
     private int numOfPlayers = 0;
     private int numOfHumanPlayers = 0;

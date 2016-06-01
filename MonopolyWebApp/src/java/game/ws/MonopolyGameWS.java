@@ -17,7 +17,6 @@ import ws.monopoly.InvalidParameters_Exception;
  */
 @WebService(serviceName = "MonopolyWebServiceService", portName = "MonopolyWebServicePort", endpointInterface = "ws.monopoly.MonopolyWebService", targetNamespace = "http://monopoly.ws/", wsdlLocation = "WEB-INF/wsdl/MonopolyGameWS/MonopolyWebServiceService.wsdl")
 public class MonopolyGameWS {
-    
     GamesManagerWS manager = new GamesManagerWS();
     
     public java.util.List<ws.monopoly.Event> getEvents(int eventId, int playerId) throws InvalidParameters_Exception {

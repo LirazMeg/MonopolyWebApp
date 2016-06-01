@@ -18,6 +18,7 @@ import ws.monopoly.Event;
 import ws.monopoly.EventType;
 import ws.monopoly.GameDetails;
 import ws.monopoly.GameStatus;
+import ws.monopoly.PlayerDetails;
 
 /**
  *
@@ -36,26 +37,24 @@ class MonopolyWS {
     public static final int ZERO = 0;
 
     public MonopolyWS() throws JAXBException, FileNotFoundException, Exception {
-    
-            this.spesificGame = new MonopolyGame();
-            this.events = new ArrayList<>();
-            this.details = new GameDetails();
-            this.timer = new Timer();
-        
+
+        this.spesificGame = new MonopolyGame();
+        this.events = new ArrayList<>();
+        this.details = new GameDetails();
+        this.timer = new Timer();
+
     }
 
     public List<Event> getEvents(int eventId) {
         List<Event> resEventsList = new ArrayList<>();
         boolean isContain = eventId >= 0 && eventId <= this.events.size();
-
+        // if the eventId contain n the list.size
         if (isContain) {
             resEventsList = this.events.subList(eventId, this.events.size());
         }
-
         if (eventId == ZERO) {
             resEventsList = this.events;
         }
-
         return resEventsList;
     }
 
@@ -149,6 +148,7 @@ class MonopolyWS {
         // sendToClient("Clear");
     }
 
+    //todo
     public void removePlayerThatResignFromList() {
 
         int lastIndex = this.spesificGame.getPleyerIndex();
@@ -169,6 +169,17 @@ class MonopolyWS {
             //     spesificGame.clearSavedReturnTiles();
         }
 
+    }
+
+    public List<PlayerDetails> getPlayersDetailsWS() {
+        List<PlayerDetails> detailsList = new ArrayList<>();
+        PlayerDetails res;
+
+        for (Player currentPlayer : spesificGame.getPlayers()) {
+            res = UtilitiesWS.getPlayerDetails(currentPlayer);
+            detailsList.add(res);
+        }
+        return detailsList;
     }
 
 }

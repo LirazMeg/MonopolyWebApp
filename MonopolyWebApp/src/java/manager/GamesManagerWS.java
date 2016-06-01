@@ -5,6 +5,7 @@
  */
 package manager;
 
+import game.wsService.UtilitiesWS;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import models.Player;
 import ws.monopoly.DuplicateGameName_Exception;
 import ws.monopoly.GameDoesNotExists_Exception;
 import ws.monopoly.InvalidParameters_Exception;
+import ws.monopoly.PlayerDetails;
 
 /**
  *
@@ -30,9 +32,9 @@ public class GamesManagerWS {
         String gameName;
         List<ws.monopoly.Event> events = new ArrayList<>();
 
-        if (playersIdAsGameName.containsKey(playerId)) {
+        if (playersIdAsGameName.containsKey(playerId)) {//if the player exist
             gameName = playersIdAsGameName.get(playerId);
-            if (gamesContainer.containsKey(gameName)) {
+            if (gamesContainer.containsKey(gameName)) {// if the game eist
                 events = gamesContainer.get(gameName).getEvents(eventId);
             } else {
                 throw new InvalidParameters_Exception("Game: " + gameName + " is not exist .", null);
@@ -44,15 +46,17 @@ public class GamesManagerWS {
         return events;
     }
 
+    //TODO
     public java.lang.String getBoardSchema() {
-        return "monopoly_config";
+        return "";
     }
 
+    //TODO
     public java.lang.String getBoardXML() {
         return "monopoly_config";
     }
 
-    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name){
+    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) {
         MonopolyWS currentGame;
         try {
             if (gamesContainer.containsKey(name)) {
@@ -62,7 +66,7 @@ public class GamesManagerWS {
             } else {
                 currentGame = new MonopolyWS();
                 currentGame.createGame(computerizedPlayers, humanPlayers, name);
-                gamesContainer.put(name, currentGame);
+                gamesContainer.put(name, currentGame);// add game to continer 
                 System.out.println("Game Inserted");
             }
         } catch (Exception e) {
@@ -103,7 +107,7 @@ public class GamesManagerWS {
             } else if (currentGame.isPlayerNameExist(playerName)) {
                 throw new InvalidParameters_Exception("The name " + playerName + " is already exist.", null);
             } else {
-                playersContainer.put(idPlayerCounter, currentGame.addPlayerToGame(playerName, true));
+                playersContainer.put(idPlayerCounter,/*this func not working*/ currentGame.addPlayerToGame(playerName, true));
                 resKeyID = idPlayerCounter;
                 playersIdAsGameName.put(resKeyID, gameName);
                 idPlayerCounter++;
@@ -114,8 +118,18 @@ public class GamesManagerWS {
     }
 
     public ws.monopoly.PlayerDetails getPlayerDetails(int playerId) throws ws.monopoly.InvalidParameters_Exception, ws.monopoly.GameDoesNotExists_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        PlayerDetails playerDetails;
+        Player currPlayer;
+
+        if (!playersContainer.containsKey(playerId)) {
+            throw new GameDoesNotExists_Exception("Player is not exists.", null);
+        } else {
+            currPlayer = playersContainer.get(playerId);
+            playerDetails = UtilitiesWS.getPlayerDetails(currPlayer);
+
+        }
+        return playerDetails;
+
     }
 
     public void buy(int arg0, int arg1, boolean arg2) {
@@ -129,8 +143,22 @@ public class GamesManagerWS {
     }
 
     public java.util.List<ws.monopoly.PlayerDetails> getPlayersDetails(java.lang.String gameName) throws ws.monopoly.GameDoesNotExists_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+          
+        List<PlayerDetails> detailsList ;
+        MonopolyWS currGame;
+        
+        if(!gamesContainer.containsKey(gameName))
+        {
+            throw new GameDoesNotExists_Exception("Game is not exists",null);
+        }
+        else
+        {
+            currGame = gamesContainer.get(gameName);
+            detailsList = currGame.getPlayersDetailsWS();
+        }
+        
+        return detailsList;
     }
+    
 
 }
