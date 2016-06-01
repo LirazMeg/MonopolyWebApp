@@ -76,7 +76,7 @@ public class UtilitiesWS {
 //        pDetails.getTiles().addAll(wsTiles);
 //    }
 
-    public static ws.monopoly.Event createEvent(int id, ws.monopoly.EventType type, int value, String name)
+    public static ws.monopoly.Event createEvent(int id, ws.monopoly.EventType type, String name)
     {
         ws.monopoly.Event res = new Event();
         

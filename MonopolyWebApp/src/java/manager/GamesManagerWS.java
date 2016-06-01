@@ -5,11 +5,14 @@
  */
 package manager;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import models.Player;
+import ws.monopoly.DuplicateGameName_Exception;
+import ws.monopoly.GameDoesNotExists_Exception;
 import ws.monopoly.InvalidParameters_Exception;
 
 /**
@@ -49,14 +52,31 @@ public class GamesManagerWS {
         return "monopoly_config";
     }
 
-    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) throws ws.monopoly.DuplicateGameName_Exception, ws.monopoly.InvalidParameters_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name){
+        MonopolyWS currentGame;
+        try {
+            if (gamesContainer.containsKey(name)) {
+                throw new DuplicateGameName_Exception("Game with same name allready exists.", null);
+            } else if (name.equals("")) {
+                throw new InvalidParameters_Exception("Invalid input(name)", null);
+            } else {
+                currentGame = new MonopolyWS();
+                currentGame.createGame(computerizedPlayers, humanPlayers, name);
+                gamesContainer.put(name, currentGame);
+                System.out.println("Game Inserted");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + e.getStackTrace().toString());
+        }
+
     }
 
     public ws.monopoly.GameDetails getGameDetails(java.lang.String gameName) throws ws.monopoly.GameDoesNotExists_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (!gamesContainer.containsKey(gameName)) {
+            throw new GameDoesNotExists_Exception("Game not exists.", null);
+        } else {
+            return gamesContainer.get(gameName).getGameDetails();
+        }
     }
 
     public java.util.List<java.lang.String> getWaitingGames() {
@@ -71,8 +91,26 @@ public class GamesManagerWS {
     }
 
     public int joinGame(java.lang.String gameName, java.lang.String playerName) throws ws.monopoly.GameDoesNotExists_Exception, ws.monopoly.InvalidParameters_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int resKeyID;
+        MonopolyWS currentGame;
+
+        if (!gamesContainer.containsKey(gameName)) {
+            throw new GameDoesNotExists_Exception("Game is not exists.", null);
+        } else {
+            currentGame = gamesContainer.get(gameName);
+            if (!currentGame.isGameWait()) {
+                throw new InvalidParameters_Exception("Game status isn't wait.", null);
+            } else if (currentGame.isPlayerNameExist(playerName)) {
+                throw new InvalidParameters_Exception("The name " + playerName + " is already exist.", null);
+            } else {
+                playersContainer.put(idPlayerCounter, currentGame.addPlayerToGame(playerName, true));
+                resKeyID = idPlayerCounter;
+                playersIdAsGameName.put(resKeyID, gameName);
+                idPlayerCounter++;
+            }
+        }
+
+        return resKeyID;
     }
 
     public ws.monopoly.PlayerDetails getPlayerDetails(int playerId) throws ws.monopoly.InvalidParameters_Exception, ws.monopoly.GameDoesNotExists_Exception {

@@ -71,10 +71,15 @@ public class FileManager {
         return dir;
     }
 
-    public void loadXmlFromUser(File LoadFile) throws JAXBException {
-        JAXBContext jaxbContext = JAXBContext.newInstance(generated.Monopoly.class);
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        this.monopolyGame = (Monopoly) jaxbUnmarshaller.unmarshal(LoadFile);
+    public void loadXmlFromUser(File LoadFile){
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(generated.Monopoly.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            this.monopolyGame = (Monopoly) jaxbUnmarshaller.unmarshal(LoadFile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + e.getStackTrace().toString());
+        }
+
     }
 
     public MonopolyModel initalizeGameFromXMLFile() {

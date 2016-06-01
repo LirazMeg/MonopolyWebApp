@@ -26,24 +26,24 @@
             <isset property="conf.dir"/>
         </condition>
     </target>
-    <target name="wsimport-service-gameWS" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/service/gameWS"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/service/gameWS" destdir="${build.generated.dir}/jax-wsCache/service/gameWS" wsdl="${basedir}/${conf-dir}xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService.wsdl" catalog="catalog.xml" extension="true" verbose="true" fork="false" xnocompile="true" xendorsed="true">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-services/gameWS/wsdl/MonopolyWebServiceService.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/service/gameWS"/>
+    <target name="wsimport-service-MonopolyGameWS" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/service/MonopolyGameWS"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/service/MonopolyGameWS" destdir="${build.generated.dir}/jax-wsCache/service/MonopolyGameWS" wsdl="${basedir}/${conf-dir}xml-resources/web-services/MonopolyGameWS/wsdl/MonopolyWebServiceService.wsdl" catalog="catalog.xml" extension="true" verbose="true" fork="false" xnocompile="true" xendorsed="true">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-services/MonopolyGameWS/wsdl/MonopolyWebServiceService.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/service/MonopolyGameWS"/>
         </wsimport>
         <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/service/gameWS">
+            <fileset dir="${build.generated.dir}/jax-wsCache/service/MonopolyGameWS">
                 <include name="**/*.java"/>
             </fileset>
         </copy>
-        <copy todir="${build.web.dir}/WEB-INF/wsdl/gameWS">
-            <fileset dir="${basedir}/${conf-dir}xml-resources/web-services/gameWS/wsdl/"/>
+        <copy todir="${build.web.dir}/WEB-INF/wsdl/MonopolyGameWS">
+            <fileset dir="${basedir}/${conf-dir}xml-resources/web-services/MonopolyGameWS/wsdl/"/>
         </copy>
     </target>
-    <target name="wsimport-service-clean-gameWS" depends="-init-project">
+    <target name="wsimport-service-clean-MonopolyGameWS" depends="-init-project">
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/monopoly"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/service/gameWS"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/service/MonopolyGameWS"/>
     </target>
-    <target name="wsimport-service-generate" depends="wsimport-service-gameWS"/>
+    <target name="wsimport-service-generate" depends="wsimport-service-MonopolyGameWS"/>
 </project>

@@ -29,7 +29,6 @@ import models.SquareType;
  */
 public class MonopolyGame {
 
-    private static final String CUMPUTER_PLAYER = "CumputerPlayer";
     private MonopolyModel monopolyGame = null;
     private List<Player> players;
     private Player currentPlayer;
@@ -45,9 +44,13 @@ public class MonopolyGame {
     private int joinNumber;
     private int numComputerizedPlayers;
 
-    public MonopolyGame() throws JAXBException, FileNotFoundException, Exception {
-        this.filesManager = new FileManager("monopoly_config", false, false);
-        initiolaize();
+    public MonopolyGame() {
+        try {
+            this.filesManager = new FileManager("monopoly_config", false, false);
+            initiolaize();
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + e.getStackTrace().toString());
+        }
     }
 
     public Player getCurrentPlayer() {
@@ -136,6 +139,16 @@ public class MonopolyGame {
         this.currentPlayer = players.get(this.pleyerIndex);
     }
 
+    public void removePlayerThatResignFromList() {
+        for (int i = 0; i < this.players.size(); i++) {
+            if (this.players.get(i).isResign()) {
+                this.players.remove(i);
+                joinNumber--;
+                break;
+            }
+        }
+    }
+
 //    public void makeMove(int numOfSteps, boolean isCanPasStart) throws Exception {
 //        this.currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
 //        //showCurrentLocionOfPlayerOnBoard(false);
@@ -209,11 +222,15 @@ public class MonopolyGame {
         Player playerToAdd = null;
         if (isHumen) {
             playerToAdd = new HumanPlayer(playerName);
-            this.numOfHumanPlayers++;
+            this.joinNumber++;
         } else {
-            playerToAdd = new ComputerPlayer(CUMPUTER_PLAYER + this.numComputerizedPlayers + 1);
-            this.numComputerizedPlayers++;
+            playerToAdd = new ComputerPlayer(playerName);
         }
+        this.players.add(playerToAdd);
         return playerToAdd;
+    }
+
+    public Player getPlayer(int index) {
+        return this.players.get(index);
     }
 }

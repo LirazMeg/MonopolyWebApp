@@ -61,6 +61,16 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="getWaitingGames">
+    <xs:sequence/>
+  </xs:complexType>
+
+  <xs:complexType name="getWaitingGamesResponse">
+    <xs:sequence>
+      <xs:element name="return" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="createGame">
     <xs:sequence>
       <xs:element name="computerizedPlayers" type="xs:int"/>
@@ -91,16 +101,6 @@
     <xs:sequence>
       <xs:element name="faultInfo" type="tns:monopolyFault" minOccurs="0"/>
       <xs:element name="message" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="getWaitingGames">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="getWaitingGamesResponse">
-    <xs:sequence>
-      <xs:element name="return" type="xs:string" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 
