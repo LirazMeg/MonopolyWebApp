@@ -6,61 +6,70 @@
 package game.ws;
 
 import javax.jws.WebService;
-import manager.GamesManagerWS;
 import ws.monopoly.DuplicateGameName_Exception;
 import ws.monopoly.GameDoesNotExists_Exception;
 import ws.monopoly.InvalidParameters_Exception;
 
 /**
  *
- * @author Liraz
+ * @author efrat
  */
 @WebService(serviceName = "MonopolyWebServiceService", portName = "MonopolyWebServicePort", endpointInterface = "ws.monopoly.MonopolyWebService", targetNamespace = "http://monopoly.ws/", wsdlLocation = "WEB-INF/wsdl/MonopolyGameWS/MonopolyWebServiceService.wsdl")
 public class MonopolyGameWS {
-    GamesManagerWS manager = new GamesManagerWS();
-    
+
     public java.util.List<ws.monopoly.Event> getEvents(int eventId, int playerId) throws InvalidParameters_Exception {
-        return this.manager.getEvents(eventId, playerId);
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public java.util.List<ws.monopoly.PlayerDetails> getPlayersDetails(java.lang.String gameName) throws GameDoesNotExists_Exception {
-        return this.manager.getPlayersDetails(gameName);
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public java.util.List<java.lang.String> getWaitingGames() {
-        return this.manager.getWaitingGames();
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
-    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) throws InvalidParameters_Exception, DuplicateGameName_Exception {
-        this.manager.createGame(computerizedPlayers, humanPlayers, name);
+
+    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) throws DuplicateGameName_Exception, InvalidParameters_Exception {
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public void resign(int playerId) throws InvalidParameters_Exception {
-        this.manager.resign(playerId);
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
-    public int joinGame(java.lang.String gameName, java.lang.String playerName) throws InvalidParameters_Exception, GameDoesNotExists_Exception {
-        return this.manager.joinGame(gameName, playerName);
+
+    public int joinGame(java.lang.String gameName, java.lang.String playerName) throws GameDoesNotExists_Exception, InvalidParameters_Exception {
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public java.lang.String getBoardXML() {
-        return this.manager.getBoardXML();
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public ws.monopoly.PlayerDetails getPlayerDetails(int playerId) throws InvalidParameters_Exception, GameDoesNotExists_Exception {
-        return this.manager.getPlayerDetails(playerId);
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public java.lang.String getBoardSchema() {
-        return this.manager.getBoardSchema();
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public ws.monopoly.GameDetails getGameDetails(java.lang.String gameName) throws GameDoesNotExists_Exception {
-        return this.manager.getGameDetails(gameName);
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
-    
+
     public void buy(int arg0, int arg1, boolean arg2) throws InvalidParameters_Exception {
-        this.manager.buy(arg0, arg1, arg2);
+        //TODO implement this method
+        throw new UnsupportedOperationException("Not implemented yet.");
     }
     
 }
