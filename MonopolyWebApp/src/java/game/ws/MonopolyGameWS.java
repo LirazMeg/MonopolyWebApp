@@ -15,7 +15,7 @@ import ws.monopoly.InvalidParameters_Exception;
 
 /**
  *
- * @author Liraz
+ * @author efrat
  */
 @WebService(serviceName = "MonopolyWebServiceService", portName = "MonopolyWebServicePort", endpointInterface = "ws.monopoly.MonopolyWebService", targetNamespace = "http://monopoly.ws/", wsdlLocation = "WEB-INF/wsdl/MonopolyGameWS/MonopolyWebServiceService.wsdl")
 public class MonopolyGameWS {
