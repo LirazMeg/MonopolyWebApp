@@ -21,7 +21,7 @@ public class ComputerPlayer extends Player {
         boolean buy = false;
         if (square.getCost() <= this.amount) {
             buy = true;
-           // ConsolUI.computerPerchasAHouse(price, square.getName(), square.getCounterOfHouse() + 1);
+            // ConsolUI.computerPerchasAHouse(price, square.getName(), square.getCounterOfHouse() + 1);
         }
         return buy;
 
@@ -36,6 +36,11 @@ public class ComputerPlayer extends Player {
         }
 
         return buy;
+    }
+
+    @Override
+    public boolean isHumen() {
+        return false;
     }
 
 }

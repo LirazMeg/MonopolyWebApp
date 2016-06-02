@@ -74,18 +74,18 @@ public class UtilitiesWS {
 //        
 //        playerDetails.getTiles().addAll(wsTiles);
 //    }
-    public static ws.monopoly.Event createEvent(int id, ws.monopoly.EventType type, String name) {
+    public static ws.monopoly.Event createEvent(int id, ws.monopoly.EventType type, String name, int timeoutCount) {
         ws.monopoly.Event res = new Event();
         res.setId(id);
         res.setPlayerName(name);
         res.setType(type);
-
+        res.setTimeout(timeoutCount);
         return res;
     }
-
+    
     public static ws.monopoly.Event createBasicEvent(int id, ws.monopoly.EventType type, String name) {
         ws.monopoly.Event res = new Event();
-
+        
         res.setId(id);
         res.setPlayerName(name);
         res.setType(type);
@@ -123,7 +123,7 @@ public class UtilitiesWS {
 //      }
     public static PlayerDetails getPlayerDetails(Player currPlayer) {
         PlayerDetails playerDetails = new PlayerDetails();
-
+        
         playerDetails.setName(currPlayer.getName());
         playerDetails.setMoney((int) currPlayer.getAmount());
         setPlayerStatuse(playerDetails, currPlayer.isResign());
@@ -132,7 +132,7 @@ public class UtilitiesWS {
         } else {
             playerDetails.setType(PlayerType.COMPUTER);
         }
-
+        
         return playerDetails;
     }
 }

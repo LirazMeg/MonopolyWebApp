@@ -29,6 +29,7 @@ public abstract class Player {
     private boolean isHaveGetOutOfJailCard;
     private models.GetOutOfJailCard getOutOfJailCard;
     private boolean resign;
+    private boolean isPassStartSqure;
 
     public Player(String name) {
         this.name = name;
@@ -46,6 +47,7 @@ public abstract class Player {
         this.isHaveGetOutOfJailCard = false;
         this.getOutOfJailCard = null;
         this.resign = false;
+        this.isPassStartSqure = false;
     }
 
     public void setResign(boolean resign) {
@@ -141,10 +143,12 @@ public abstract class Player {
     }
 
     public void move(int numberOfSteps, boolean isCanPasByStart) {
+
         this.squreNum = this.squreNum + numberOfSteps;
         if (this.squreNum > 36 && isCanPasByStart) {//// the player pass on start square
             addToAmount(200);
-            // ConsolUI.msgPassedByStartSquar();
+            this.isPassStartSqure = true;
+
         }
         this.squreNum = this.squreNum % 36;
     }
@@ -260,7 +264,18 @@ public abstract class Player {
     }
 
     public boolean isResign() {
-      return this.resign;
+        return this.resign;
+    }
+
+    abstract public boolean isHumen();
+
+    public boolean isPassStartSqure() {
+        boolean res = false;
+        if (this.isPassStartSqure) {
+            res = true;
+            this.isPassStartSqure = false;
+        }
+        return res;
     }
 
 }

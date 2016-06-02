@@ -106,7 +106,7 @@ public class GamesManagerWS {
             } else if (currentGame.isPlayerNameExist(playerName)) {
                 throw new InvalidParameters_Exception("The name " + playerName + " is already exist.", null);
             } else {
-                playersContainer.put(idPlayerCounter,/*this func not working*/ currentGame.addPlayerToGame(playerName, true));
+                playersContainer.put(idPlayerCounter, currentGame.addPlayerToGame(playerName, true));
                 resKeyID = idPlayerCounter;
                 playersIdAsGameName.put(resKeyID, gameName);
                 idPlayerCounter++;
@@ -136,9 +136,19 @@ public class GamesManagerWS {
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
-    public void resign(int playerId) throws ws.monopoly.InvalidParameters_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+    public void resign(int playerId) throws ws.monopoly.InvalidParameters_Exception, Exception {
+        String gameName;
+        MonopolyWS currentGame;
+        Player currentPlayer;
+        if (!playersContainer.containsKey(playerId)) {
+            throw new InvalidParameters_Exception("Player is not exists.", null);
+        } else {
+            currentPlayer = this.playersContainer.get(playerId);
+            currentPlayer.setResign(true);
+            gameName = this.playersIdAsGameName.get(playerId);
+            currentGame = this.gamesContainer.get(gameName);
+            currentGame.removePlayerThatResignFromList();
+        }
     }
 
     public java.util.List<ws.monopoly.PlayerDetails> getPlayersDetails(java.lang.String gameName) throws ws.monopoly.GameDoesNotExists_Exception {

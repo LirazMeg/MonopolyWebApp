@@ -31,6 +31,7 @@ public class MonopolyGame {
 
     final static int NUM_START_SQUARE = 1;
     final static int ONE = 1;
+    final static int ZERO = 0;
     private MonopolyModel monopolyGame = null;
     private List<Player> players;
     private Player currentPlayer;
@@ -54,7 +55,7 @@ public class MonopolyGame {
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return this.currentPlayer;
     }
 
     public void setPleyerIndex(int pleyerIndex) {
@@ -142,7 +143,7 @@ public class MonopolyGame {
     public void removePlayerThatResignFromList() {
         for (int i = 0; i < this.players.size(); i++) {
             if (this.players.get(i).isResign()) {
-                this.players.remove(i);
+                handelPlayerPresence(this.players.get(i));
                 joinNumber--;
                 break;
             }
@@ -177,21 +178,38 @@ public class MonopolyGame {
 //        }
 //    }
     public boolean checkIfIsGameOver() {
-
         boolean result = false;
-        if (this.players.size() == ONE) {
+        if ((this.joinNumber == ONE && this.numComputerizedPlayers == ZERO) || (this.joinNumber == ZERO)) {
             result = true;
         }
         return result;
     }
 
+    public String getWinnerName() {
+
+        String name = this.players.get(0).getName();
+        long winnerAmount = this.players.get(0).getAmount();
+
+        for (Player winner : this.players) {
+
+            if (winner.getAmount() > winnerAmount) {
+                winnerAmount = winner.getAmount();
+                name = winner.getName();
+            }
+
+        }
+        return name;
+    }
+
     public void handelPlayerPresence(Player player) {
-        if (player.isQuit()) {
+        if (player.isResign() || player.isQuit()) {
             // update alll the assetes that the player owned
             monopolyGame.removePlayerrFromTheGame(player);
             this.players.remove(this.pleyerIndex);
             this.pleyerIndex = this.pleyerIndex - 1;
-//            ConsolUI.msgPlayerIsOut(player.getName());
+            if (player.isHumen()) {
+                this.joinNumber--;
+            }
         }
     }
 
@@ -233,4 +251,7 @@ public class MonopolyGame {
     public Player getPlayer(int index) {
         return this.players.get(index);
     }
+
+  
+    
 }

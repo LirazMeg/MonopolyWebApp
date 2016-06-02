@@ -16,6 +16,8 @@ public abstract class SquareBase {
     abstract public void stepOnMe(Player player);
 
     abstract public String getInfo();
-    
+
     abstract public String getImageName();
+
+   // abstract public int getSqureId();
 }
