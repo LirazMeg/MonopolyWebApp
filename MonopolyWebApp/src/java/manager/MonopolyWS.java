@@ -58,7 +58,7 @@ class MonopolyWS {
         return resEventsList;
     }
 
-    public void setGameDetails(GameStatus status, boolean isLoadedFromXml) {
+    public void setGameDetails(GameStatus status) {
         details.setName(spesificGame.getGameName());
         details.setStatus(status);
         details.setHumanPlayers(spesificGame.getHumanPlayers());
@@ -68,7 +68,7 @@ class MonopolyWS {
 
     public void createGame(int computerizedPlayers, int humanPlayers, String name) {
         spesificGame.createGameWS(computerizedPlayers, humanPlayers, ZERO, name);
-        setGameDetails(GameStatus.WAITING, false);
+        setGameDetails(GameStatus.WAITING);
     }
 
     public void addEvents(EventType type, String playerName) {
@@ -97,14 +97,14 @@ class MonopolyWS {
 
     Player addPlayerToGame(String playerName, boolean isHumen) {
         Player res = spesificGame.addPlayerToGame(playerName, isHumen);
-        setGameDetails(GameStatus.WAITING, false);
+        setGameDetails(GameStatus.WAITING);
 
         if (isGameFull()) {
             for (int i = 0; i < details.getComputerizedPlayers(); i++) {
                 spesificGame.addPlayerToGame(CUMPUTER_PLAYER + (i + 1), false);
             }
 
-            setGameDetails(GameStatus.ACTIVE, false);
+            setGameDetails(GameStatus.ACTIVE);
 
             events.clear();
             initNewGame();
