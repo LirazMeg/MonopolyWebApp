@@ -85,7 +85,6 @@ public class GamesManagerWS {
 
     public java.util.List<java.lang.String> getWaitingGames() {
         List<String> waitingGames = new ArrayList<>();
-
         for (Map.Entry<String, MonopolyWS> entry : gamesContainer.entrySet()) {
             if (entry.getValue().isGameWait()) {
                 waitingGames.add(entry.getValue().getGameDetails().getName());
@@ -143,22 +142,15 @@ public class GamesManagerWS {
     }
 
     public java.util.List<ws.monopoly.PlayerDetails> getPlayersDetails(java.lang.String gameName) throws ws.monopoly.GameDoesNotExists_Exception {
-          
-        List<PlayerDetails> detailsList ;
+        List<PlayerDetails> detailsList;
         MonopolyWS currGame;
-        
-        if(!gamesContainer.containsKey(gameName))
-        {
-            throw new GameDoesNotExists_Exception("Game is not exists",null);
-        }
-        else
-        {
+        if (!gamesContainer.containsKey(gameName)) {
+            throw new GameDoesNotExists_Exception("Game is not exists", null);
+        } else {
             currGame = gamesContainer.get(gameName);
             detailsList = currGame.getPlayersDetailsWS();
         }
-        
         return detailsList;
     }
-    
 
 }
