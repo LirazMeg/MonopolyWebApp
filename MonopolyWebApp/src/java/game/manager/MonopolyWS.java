@@ -367,6 +367,7 @@ class MonopolyWS {
     private void addEventsWitheMsg(EventType type, String playerName, String msg, int timeoutCounter) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timeoutCounter);
         eventToAdd.setEventMessage(msg);
+        this.events.add(eventToAdd);
     }
 
     private void addEventsMove(EventType type, String playerName, int squreNum, boolean isInJail, String msg, int timoutCount) {
@@ -374,24 +375,26 @@ class MonopolyWS {
         eventToAdd.setNextBoardSquareID(squreNum);
         eventToAdd.setPlayerMove(isInJail);
         eventToAdd.setEventMessage(msg);
+        this.events.add(eventToAdd);
     }
-
-//    private void addEventPymentTreasury(EventType type, String playerName, boolean paymemtFromUser, int amount, int timoutCount) {
-//        Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timoutCount);
-//        eventToAdd.setPaymemtFromUser(paymemtFromUser);
-//        //need to update •	paymentToOrFromTreasury
-//        //eventToAdd.setPay
-//    }
 
     private void addEventsPayment(EventType type, String playerName, boolean paymemtFromUser, String paymentToPlayerName, int amount, int timountCount) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timountCount);
         eventToAdd.setPaymentAmount(amount);
         eventToAdd.setPaymentToPlayerName(paymentToPlayerName);
         eventToAdd.setPaymemtFromUser(paymemtFromUser);
+        this.events.add(eventToAdd);
     }
 
-    public void buyHouse(CityType squareCity) {
-        this.spesificGame.getCurrentPlayer().purchase(squareCity, squareCity.getHouseCost());
+    private void addEventsPropmtPlayerToBuy(EventType type, String playerName, String msg, int squreNum, int timeoutCounter) {
+        Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timeoutCounter);
+        eventToAdd.setEventMessage(msg);
+        eventToAdd.setBoardSquareID(squreNum);
+        this.events.add(eventToAdd);
+    }
+
+    public void buyHouse(CityType squareCity, Player player) {
+        player.purchase(squareCity, squareCity.getHouseCost());
         squareCity.addToCounterOfHouse();
 
     }
@@ -405,22 +408,21 @@ class MonopolyWS {
         return canBuyCity;
     }
 
-    public void buyCity(SquareType square) {
+    public void buyCity(SquareType square, Player player) {
         CityType city = (CityType) square.getAsset();
-        this.spesificGame.getCurrentPlayer().purchase(city, city.getCost());
-        city.setHaveOwner(this.spesificGame.getCurrentPlayer());
+        player.purchase(city, city.getCost());
+        city.setHaveOwner(player);
     }
 
-    private void buyTrnsportionOrUtility(SquareType square, int squareNum) {
+    private void buyTrnsportionOrUtility(SquareType square, int squareNum, Player player) {
         SquareType squreType = (SquareType) this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(squareNum);
-        squreType.getAsset().setHaveOwner(this.spesificGame.getCurrentPlayer());
-        this.spesificGame.getCurrentPlayer().purchase(square.getAsset(), square.getAsset().getCost());
+        squreType.getAsset().setHaveOwner(player);
+        player.purchase(square.getAsset(), square.getAsset().getCost());
     }
 
     public void buyingAssetOffer(SquareType square, int squreNum) {// in this case can buy only house
         boolean canBuy = false;
         boolean wantToBuy = false;
-        String answer = "";
         Player currentPlayer = this.spesificGame.getCurrentPlayer();
 
         switch (square.getType()) {
@@ -428,21 +430,20 @@ class MonopolyWS {
                 CityType citySquar = (CityType) square.getAsset();
                 if (checkIfPlayerCanBuyHouse(square)) {
                     if (currentPlayer.isHumen()) {
-
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
-                        addEventsWitheMsg(EventType.HOUSE_BOUGHT, answer, msg, -1);
+                        addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         timing();
                     } else {
-                        buyHouse(citySquar);
+                        buyHouse(citySquar, currentPlayer);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
                     }
                 } else if (checkIfPlayerCanBuyCity(square)) {
                     if (currentPlayer.isHumen()) {
                         String msg = "Do You Want To Buy " + citySquar.getName() + " (price " + citySquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
-                        addEventsWitheMsg(EventType.ASSET_BOUGHT, answer, msg, -1);
+                        addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         timing();
                     } else {
-                        buyCity(square);
+                        buyCity(square, currentPlayer);
                     }
                 }
                 break;
@@ -452,10 +453,10 @@ class MonopolyWS {
                 SimpleAssetType assetSquar = (SimpleAssetType) square.getAsset();
                 if (currentPlayer.isHumen()) {
                     String msg = "Do You Want To Buy " + assetSquar.getName() + " (price " + assetSquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
-                    addEventsWitheMsg(EventType.ASSET_BOUGHT, answer, msg, -1);
+                    addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                     timing();
                 } else {
-                    buyTrnsportionOrUtility(square, currentPlayer.getSqureNum());
+                    buyTrnsportionOrUtility(square, currentPlayer.getSqureNum(), currentPlayer);
                 }
 
                 break;
@@ -549,7 +550,7 @@ class MonopolyWS {
         if (type.equals(MonetaryCard.Who.TREASURY)) {
             this.spesificGame.getCurrentPlayer().payToTreasury(sum);
             //when player need to pay to truasury paymentToPlayerName= empty string
-            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), pymentFromUser,paymentToPlayerName, (int) sum, ZERO);
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), pymentFromUser, paymentToPlayerName, (int) sum, ZERO);
         } else if (type.equals(MonetaryCard.Who.PLAYERS)) {
             payToAllPlayers(sum);
         }
@@ -562,6 +563,40 @@ class MonopolyWS {
                 this.spesificGame.getCurrentPlayer().pay(player, sum);
                 addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), pymentFromUser, player.getName(), (int) sum, ZERO);
             }
+        }
+    }
+
+    int getEventListSize() {
+        return this.events.size();
+    }
+
+    void buy(Player player, Event event) {
+        SquareType square = (SquareType) this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(event.getBoardSquareID());
+
+        switch (event.getType()) {
+            case PROPMT_PLAYER_TO_BY_ASSET:
+                buyAsset(player, square, event.getBoardSquareID());
+                break;
+            case PROPMPT_PLAYER_TO_BY_HOUSE:
+                buyHouse((CityType) square.getAsset(), player);
+                break;
+            default:
+                throw new AssertionError(event.getType().name());
+
+        }
+    }
+
+    private void buyAsset(Player player, SquareType square, int squreNum) {
+        switch (square.getType()) {
+            case CITY:
+                buyCity(square, player);
+                break;
+            case UTILITY:
+            case TRANSPORTATION:
+                buyTrnsportionOrUtility(square, squreNum, player);
+                break;
+            default:
+                throw new AssertionError(square.getType().name());
         }
     }
 

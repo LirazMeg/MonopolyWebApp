@@ -6,13 +6,21 @@
 package game.manager;
 
 import game.wsService.UtilitiesWS;
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Player;
 import ws.monopoly.DuplicateGameName_Exception;
+import ws.monopoly.Event;
 import ws.monopoly.GameDoesNotExists_Exception;
 import ws.monopoly.InvalidParameters_Exception;
 import ws.monopoly.PlayerDetails;
@@ -46,14 +54,54 @@ public class GamesManagerWS {
         return events;
     }
 
-    //TODO
     public java.lang.String getBoardSchema() {
-        return "";
+        BufferedReader br = null;
+        try {
+            String xmlInput = "/resources/monopoly_config.xsd";
+            InputStream xmlInputStream = GamesManagerWS.class.getResourceAsStream(xmlInput);
+            br = new BufferedReader(new FileReader(new File(xmlInputStream.toString())));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                sb.append(line.trim());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return br.toString();
     }
 
-    //TODO
     public java.lang.String getBoardXML() {
-        return "monopoly_config";
+        BufferedReader br = null;
+        try {
+            String xmlInput = "/resources/monopoly_config.xml";
+            InputStream xmlInputStream = GamesManagerWS.class.getResourceAsStream(xmlInput);
+            br = new BufferedReader(new FileReader(new File(xmlInputStream.toString())));
+            String line;
+            StringBuilder sb = new StringBuilder();
+            while ((line = br.readLine()) != null) {
+                sb.append(line.trim());
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return br.toString();
     }
 
     public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) {
@@ -131,15 +179,43 @@ public class GamesManagerWS {
 
     }
 
-   public void buy(int arg0, int arg1, boolean arg2) throws InvalidParameters_Exception {
-  
+    public void buy(int playerID, int eventID, boolean buy) throws InvalidParameters_Exception {
+        String gameName;
+        MonopolyWS currGame;
+        if (buy) {
+            if (!this.playersContainer.containsKey(playerID)) {
+                throw new InvalidParameters_Exception("Player is not exists.", null);
+            } else if (!this.playersIdAsGameName.containsKey(playerID)) {
+                throw new InvalidParameters_Exception("Game is not exists.", null);
+            } else if (!this.gamesContainer.containsKey(this.playersIdAsGameName.get(playerID))) {
+                throw new InvalidParameters_Exception("Game is not exists.", null);
+            } else {
+                gameName = this.playersIdAsGameName.get(playerID);
+                currGame = this.gamesContainer.get(gameName);
+                Player currPlayer = this.playersContainer.get(playerID);
+                int sizeOfEvents = currGame.getEventListSize();
+
+                if (eventID > sizeOfEvents && eventID < 0) {
+                    throw new InvalidParameters_Exception("Iligal event.", null);
+                } else {
+                    List<Event> events = currGame.getEvents(eventID);
+                    if (events.size() != 1) {
+                        throw new InvalidParameters_Exception("Iligal event.", null);
+                    } else {
+                        currGame.buy(currPlayer, events.get(0));
+                    }
+                }
+            }
+            // dosnt want to buy
+        } else {
+        }
     }
 
     public void resign(int playerId) throws ws.monopoly.InvalidParameters_Exception, Exception {
         String gameName;
         MonopolyWS currentGame;
         Player currentPlayer;
-        if (!playersContainer.containsKey(playerId)) {
+        if (!this.playersContainer.containsKey(playerId)) {
             throw new InvalidParameters_Exception("Player is not exists.", null);
         } else {
             currentPlayer = this.playersContainer.get(playerId);
