@@ -131,9 +131,8 @@ public class GamesManagerWS {
 
     }
 
-    public void buy(int arg0, int arg1, boolean arg2) {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+   public void buy(int arg0, int arg1, boolean arg2) throws InvalidParameters_Exception {
+  
     }
 
     public void resign(int playerId) throws ws.monopoly.InvalidParameters_Exception, Exception {
