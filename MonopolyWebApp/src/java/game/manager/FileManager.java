@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package manager;
+package game.manager;
 
 import generated.CityType;
 import generated.Monopoly;

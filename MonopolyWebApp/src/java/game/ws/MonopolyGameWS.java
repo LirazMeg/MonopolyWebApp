@@ -8,7 +8,7 @@ package game.ws;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebService;
-import manager.GamesManagerWS;
+import game.manager.GamesManagerWS;
 import ws.monopoly.DuplicateGameName_Exception;
 import ws.monopoly.GameDoesNotExists_Exception;
 import ws.monopoly.InvalidParameters_Exception;

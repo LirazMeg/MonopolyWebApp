@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package manager;
+package game.manager;
 
 import java.io.FileNotFoundException;
 import static java.lang.System.exit;

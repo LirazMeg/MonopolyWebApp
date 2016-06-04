@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package manager;
+package game.manager;
 
 import game.wsService.UtilitiesWS;
 import java.io.FileNotFoundException;
@@ -376,12 +376,12 @@ class MonopolyWS {
         eventToAdd.setEventMessage(msg);
     }
 
-    private void addEventPymentTreasury(EventType type, String playerName, boolean paymemtFromUser, int amount, int timoutCount) {
-        Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timoutCount);
-        eventToAdd.setPaymemtFromUser(paymemtFromUser);
-        //need to update •	paymentToOrFromTreasury
-        //eventToAdd.setPay
-    }
+//    private void addEventPymentTreasury(EventType type, String playerName, boolean paymemtFromUser, int amount, int timoutCount) {
+//        Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timoutCount);
+//        eventToAdd.setPaymemtFromUser(paymemtFromUser);
+//        //need to update •	paymentToOrFromTreasury
+//        //eventToAdd.setPay
+//    }
 
     private void addEventsPayment(EventType type, String playerName, boolean paymemtFromUser, String paymentToPlayerName, int amount, int timountCount) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timountCount);
@@ -476,11 +476,12 @@ class MonopolyWS {
 
     private void actionMonoteryCardFromSurpeiseCards(long sum, MonetaryCard.Who type) {
         boolean paymemtFromUser = false;
+        Player currentPlayer = this.spesificGame.getCurrentPlayer();
         if (type == MonetaryCard.Who.PLAYERS) {
             substractFromAllPlayersAmount(sum);
         } else if (type == MonetaryCard.Who.TREASURY) {
             this.spesificGame.getCurrentPlayer().addToAmount(sum);
-            addEventPymentTreasury(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), false, (int) sum, ZERO);
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), false, currentPlayer.getName(), (int) sum, ZERO);
         }
     }
 
@@ -542,10 +543,13 @@ class MonopolyWS {
 
     public void actionMonoteryCardFromWarrantCards(long sum, MonetaryCard.Who type) {
         long totalSubstract = 0;
+        Player currentPlayer = this.spesificGame.getCurrentPlayer();
         boolean pymentFromUser = true;
+        String paymentToPlayerName = "";
         if (type.equals(MonetaryCard.Who.TREASURY)) {
             this.spesificGame.getCurrentPlayer().payToTreasury(sum);
-            addEventPymentTreasury(EventType.MOVE, this.spesificGame.getCurrentPlayer().getName(), pymentFromUser, (int) sum, ZERO);
+            //when player need to pay to truasury paymentToPlayerName= empty string
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), pymentFromUser,paymentToPlayerName, (int) sum, ZERO);
         } else if (type.equals(MonetaryCard.Who.PLAYERS)) {
             payToAllPlayers(sum);
         }
