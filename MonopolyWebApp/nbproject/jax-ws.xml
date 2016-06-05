@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
-    <service name="MonopolyGameWS">
-      <implementation-class>game.ws.MonopolyGameWS</implementation-class>
-      <wsdl-url>file:/C:/Users/efrat/Downloads/WSDL%201.1/MonopolyWebServiceService.wsdl</wsdl-url>
+    <service name="gameWS">
+      <implementation-class>game.ws.gameWS</implementation-class>
+      <wsdl-url>file:/C:/Users/Liraz/Desktop/לימודים/גאוה/WSDL%201.1/MonopolyWebServiceService.wsdl</wsdl-url>
       <local-wsdl-file>MonopolyWebServiceService.wsdl</local-wsdl-file>
       <service-name>MonopolyWebServiceService</service-name>
       <port-name>MonopolyWebServicePort</port-name>

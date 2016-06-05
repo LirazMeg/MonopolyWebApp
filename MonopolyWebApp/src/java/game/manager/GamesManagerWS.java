@@ -109,7 +109,7 @@ public class GamesManagerWS {
         try {
             if (gamesContainer.containsKey(name)) {
                 throw new DuplicateGameName_Exception("Game with same name allready exists.", null);
-            } else if (name.equals("")) {
+            } else if (name!= null && "".equals(name)) {
                 throw new InvalidParameters_Exception("Invalid input(name)", null);
             } else {
                 currentGame = new MonopolyWS();
@@ -227,7 +227,7 @@ public class GamesManagerWS {
     }
 
     public java.util.List<ws.monopoly.PlayerDetails> getPlayersDetails(java.lang.String gameName) throws ws.monopoly.GameDoesNotExists_Exception {
-        List<PlayerDetails> detailsList;
+        List<PlayerDetails> detailsList ;
         MonopolyWS currGame;
         if (!gamesContainer.containsKey(gameName)) {
             throw new GameDoesNotExists_Exception("Game is not exists", null);

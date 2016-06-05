@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+
+<monopoly xsi:noNamespaceSchemaLocation="monopoly_config.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <assets>
+
+        <countries>
+            <country name="Israel">
+                <city name="Eilat" cost="1000" houseCost="75" stayCost="120" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Azur" cost="860" houseCost="100" stayCost="180" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+
+            <country name="Brazil">
+                <city name="Brasilia" cost="380" houseCost="75" stayCost="180" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Rio De Janeiro" cost="900" houseCost="100" stayCost="100" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Sao Paulo" cost="450" houseCost="100" stayCost="190" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+            
+            <country name="Canada">
+                <city name="Toronto" cost="600" houseCost="75" stayCost="190" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Montriol" cost="550" houseCost="100" stayCost="1950" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Calgery" cost="850" houseCost="100" stayCost="1050" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+            
+            <country name="Spian">
+                <city name="Madrid" cost="670" houseCost="375" stayCost="100" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Barchelona" cost="490" houseCost="100" stayCost="190" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Bilbao" cost="500" houseCost="110" stayCost="170" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+      
+
+            <country name="Italy">
+                <city name="Roam" cost="650" houseCost="175" stayCost="160" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Venice" cost="540" houseCost="400" stayCost="170" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Milan" cost="460" houseCost="270" stayCost="160" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+        
+            <country name="Poland">
+                <city name="Warsha" cost="800" houseCost="75" stayCost="150" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Krakov" cost="590" houseCost="100" stayCost="160" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Lublin" cost="440" houseCost="100" stayCost="190" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+        
+            <country name="England">
+                <city name="London" cost="700" houseCost="75" stayCost="100" stayCost1="30" stayCost2="40" stayCost3="80" />
+                <city name="Bermingham" cost="890" houseCost="100" stayCost="190" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Manchester" cost="660" houseCost="100" stayCost="175" stayCost1="40" stayCost2="60" stayCost3="70" />
+            </country>
+        
+            <country name="Germany">
+                <city name="Berlin" cost="350" houseCost="975" stayCost="820" stayCost1="130" stayCost2="240" stayCost3="280" />
+                <city name="Munich" cost="1200" houseCost="900" stayCost="130" stayCost1="40" stayCost2="160" stayCost3="270" />
+                <city name="Frankfurt" cost="380" houseCost="800" stayCost="140" stayCost1="140" stayCost2="160" stayCost3="170" />
+            </country>
+        
+        </countries> 
+    
+        <utilities stayCost="200">
+            <utility name="Internet" cost="660" stayCost="160" />
+            <utility name="Electricity" cost="850" stayCost="300" />
+        </utilities>
+
+        <transportations stayCost="200">
+            <transportation name="Airline" cost="800" stayCost="150" />
+            <transportation name="Train" cost="750" stayCost="300" />
+            <transportation name="Taxi" cost="980" stayCost="230" />
+            <transportation name="Bus" cost="1000" stayCost="150" />   
+        </transportations>
+
+    </assets>
+
+    <surprise>
+        <monetary num="2" text="Get %s NIS from treasury becuase you are cute" who="TREASURY" sum="400" />
+        <monetary num="1" text="Get %s NIS from each player, gift for your Bar-Mizva" who="PLAYERS" sum="50" />
+        <monetary num="1" text="You were selcted as the best Monopoly player, get %s NIS from each player" who="PLAYERS" sum="10" />
+        <goto num="2" text="Go to Start and get 400 NIS" to="START" />
+        <goto num="1" text="Go to next Surprise square, if you pass the Start square get 200 NIS" to="NEXT_SURPRISE" />
+        <getOutOfJail num="1" text="Get Out of Jail. You can keep this card and use it when appropriate. You are not obliged to use it even if in Jail." />
+    </surprise>
+
+    <warrant>
+        <monetary num="1" text="You buy drinks for all your friends, pay %s NIS for each player" who="PLAYERS" sum="15" />
+        <monetary num="1" text="You were selected as the worst Monopoly player, pay %s NIS to each player" who="PLAYERS" sum="10" />
+        <monetary num="2" text="You were caught thinking of programming the Monopoly game while your girl friend talks to you, pay %s NIS fine to the treasury" who="TREASURY" sum="800" />
+        <goto num="1" text="Go to Jail" to="JAIL" />
+        <goto num="2" text="Go to next Warrant square, if you pass the Start square DO NOT get 200 NIS" to="NEXT_WARRANT" />
+    </warrant>
+
+    <!-- optional -->
+    <board>
+        <startSquare />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="SURPRISE" />
+        <square type="TRANSPORTATION" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="WARRANT" />
+        <jailSlashFreeSpaceSquare />
+
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="UTILITY" />
+        <square type="TRANSPORTATION" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <parkingSquare />
+
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="WARRANT" />
+        <square type="TRANSPORTATION" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <gotoJailSquare />
+
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="UTILITY" />
+        <square type="TRANSPORTATION" />
+        <square type="CITY" />
+        <square type="CITY" />
+        <square type="CITY" />
+
+    </board>
+
+</monopoly>
