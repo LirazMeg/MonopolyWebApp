@@ -120,7 +120,7 @@ class MonopolyWS {
             initCurrentPlayerInSpecificGame();
             addEvents(EventType.GAME_START, spesificGame.getCurrentPlayer().getName(), ZERO);
             addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
-            timing();
+            // timing();
         }
         return res;
     }
@@ -182,7 +182,6 @@ class MonopolyWS {
                 addEvents(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), ZERO);
                 addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
-
                 doIterion();
 
             }
@@ -204,8 +203,8 @@ class MonopolyWS {
     private void doIterion() throws Exception {
         Player currPlayer = this.spesificGame.getCurrentPlayer();
         boolean isGameOver = this.spesificGame.checkIfIsGameOver();
-
-        while (!isGameOver) {
+        boolean isNeedToWait = false;
+        while (!isGameOver && !isNeedToWait) {
             addEvents(EventType.PLAYER_TURN, currPlayer.getName(), ZERO);
 
             if (!currPlayer.isInParking()) {
@@ -218,16 +217,17 @@ class MonopolyWS {
                     } else if (currPlayer.isIsHaveGetOutOfJailCard()) {
                         addEventsWitheMsg(EventType.PLAYER_USED_GET_OUT_OF_JAIL_CARD, currPlayer.getName(), "You Use Your Get Out Of Jail Card", ZERO);
                         currentPlayerHaveGetOutCard(currPlayer);
-                        makeMove(diecResult[0] + diecResult[1], true, currPlayer);
+                        isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
                     } else {
                         addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), true, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
                     }
                 } else {
-                    makeMove(diecResult[0] + diecResult[1], true, currPlayer);
+                    isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
                 }
 
             }
-            this.spesificGame.handelPlayerPresence(currPlayer); // cheacke if player is still in the game - or remove player from game list
+            // cheacke if player is still in the game - or remove player from game list
+            handelPlayerPresence(currPlayer);
             this.spesificGame.nextPlayerTurn();// continue to next player
             isGameOver = this.spesificGame.checkIfIsGameOver();
         }
@@ -297,7 +297,8 @@ class MonopolyWS {
         return result;
     }
 
-    public void makeMove(int numOfSteps, boolean isCanPasStart, Player currentPlayer) throws Exception {
+    public boolean makeMove(int numOfSteps, boolean isCanPasStart, Player currentPlayer) throws Exception {
+        boolean isNeedToWait = false;
         currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
         SquareBase currentSqure = this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(currentPlayer.getSqureNum());
         addEventsMove(EventType.MOVE, currentPlayer.getName(), currentPlayer.getSqureNum(), false, "", ZERO);
@@ -323,7 +324,8 @@ class MonopolyWS {
                 addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymemtFromUser, paymentToPlayerName, (int) stayCost, ZERO);
             } else if (currentPlayer.isIsPlayerCanBuySquare()) { //has the option to buy 
                 if (currentPlayer.isPlayerHaveTheMany(currentSquareType.getAsset().getCost())) {
-                    buyingAssetOffer(currentSquareType, this.spesificGame.getCurrentPlayer().getSqureNum());
+                    isNeedToWait = buyingAssetOffer(currentSquareType, this.spesificGame.getCurrentPlayer().getSqureNum());
+
                 } else {
                     // ConsolUI.msgCantBuy();
                 }
@@ -338,6 +340,7 @@ class MonopolyWS {
             }
             currentPlayer.setUpFlages();
         }
+        return isNeedToWait;
     }
 
     public boolean checkIfPlayerCanBuyHouse(SquareType square) {
@@ -420,9 +423,10 @@ class MonopolyWS {
         player.purchase(square.getAsset(), square.getAsset().getCost());
     }
 
-    public void buyingAssetOffer(SquareType square, int squreNum) {// in this case can buy only house
+    public boolean buyingAssetOffer(SquareType square, int squreNum) {// in this case can buy only house
         boolean canBuy = false;
         boolean wantToBuy = false;
+        boolean isNeedToWait = false;
         Player currentPlayer = this.spesificGame.getCurrentPlayer();
 
         switch (square.getType()) {
@@ -432,7 +436,8 @@ class MonopolyWS {
                     if (currentPlayer.isHumen()) {
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
-                        timing();
+                        isNeedToWait = true;
+//                        timing();
                     } else {
                         buyHouse(citySquar, currentPlayer);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
@@ -441,7 +446,8 @@ class MonopolyWS {
                     if (currentPlayer.isHumen()) {
                         String msg = "Do You Want To Buy " + citySquar.getName() + " (price " + citySquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
-                        timing();
+                        isNeedToWait = true;
+//                         timing();
                     } else {
                         buyCity(square, currentPlayer);
                     }
@@ -454,14 +460,15 @@ class MonopolyWS {
                 if (currentPlayer.isHumen()) {
                     String msg = "Do You Want To Buy " + assetSquar.getName() + " (price " + assetSquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                     addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
-                    timing();
+                    isNeedToWait = true;
+//                   timing();
                 } else {
                     buyTrnsportionOrUtility(square, currentPlayer.getSqureNum(), currentPlayer);
                 }
 
                 break;
         }
-
+        return isNeedToWait;
     }
 
     private void substractFromAllPlayersAmount(long sum) {
@@ -597,6 +604,13 @@ class MonopolyWS {
                 break;
             default:
                 throw new AssertionError(square.getType().name());
+        }
+    }
+
+    private void handelPlayerPresence(Player currPlayer) {
+        if (currPlayer.isQuit()) {
+            this.spesificGame.handelPlayerPresence(currPlayer);
+            addEvents(EventType.PLAYER_LOST, currPlayer.getName(), ZERO);
         }
     }
 

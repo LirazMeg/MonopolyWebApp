@@ -82,11 +82,10 @@ public class GamesManagerWS {
     public java.lang.String getBoardXML() {
         BufferedReader br = null;
         try {
-            String xmlInput = "/resources/monopoly_config.xml";
-            InputStream xmlInputStream = GamesManagerWS.class.getResourceAsStream(xmlInput);
-            br = new BufferedReader(new FileReader(new File(xmlInputStream.toString())));
+            br = new BufferedReader(new FileReader(new File("monopoly_config.xml")));
             String line;
             StringBuilder sb = new StringBuilder();
+
             while ((line = br.readLine()) != null) {
                 sb.append(line.trim());
             }
@@ -94,12 +93,6 @@ public class GamesManagerWS {
             Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                br.close();
-            } catch (IOException ex) {
-                Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         return br.toString();
     }
@@ -109,7 +102,7 @@ public class GamesManagerWS {
         try {
             if (gamesContainer.containsKey(name)) {
                 throw new DuplicateGameName_Exception("Game with same name allready exists.", null);
-            } else if (name!= null && "".equals(name)) {
+            } else if (name != null && "".equals(name)) {
                 throw new InvalidParameters_Exception("Invalid input(name)", null);
             } else {
                 currentGame = new MonopolyWS();
@@ -227,7 +220,7 @@ public class GamesManagerWS {
     }
 
     public java.util.List<ws.monopoly.PlayerDetails> getPlayersDetails(java.lang.String gameName) throws ws.monopoly.GameDoesNotExists_Exception {
-        List<PlayerDetails> detailsList ;
+        List<PlayerDetails> detailsList;
         MonopolyWS currGame;
         if (!gamesContainer.containsKey(gameName)) {
             throw new GameDoesNotExists_Exception("Game is not exists", null);

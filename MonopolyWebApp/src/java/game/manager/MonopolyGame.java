@@ -202,11 +202,13 @@ public class MonopolyGame {
     }
 
     public void handelPlayerPresence(Player player) {
-        if (player.isResign() || player.isQuit()) {
-            // update alll the assetes that the player owned
+        // if (player.isResign() || player.isQuit()) {
+        if (player.isQuit()) {
+            // update all the assetes that the player owned
             monopolyGame.removePlayerrFromTheGame(player);
             this.players.remove(this.pleyerIndex);
             this.pleyerIndex = this.pleyerIndex - 1;
+            
             if (player.isHumen()) {
                 this.joinNumber--;
             }
@@ -252,6 +254,4 @@ public class MonopolyGame {
         return this.players.get(index);
     }
 
-  
-    
 }
