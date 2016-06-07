@@ -120,7 +120,7 @@ class MonopolyWS {
             initCurrentPlayerInSpecificGame();
             addEvents(EventType.GAME_START, spesificGame.getCurrentPlayer().getName(), ZERO);
             addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
-            // timing();
+            timing();
         }
         return res;
     }
@@ -206,7 +206,6 @@ class MonopolyWS {
         boolean isNeedToWait = false;
         while (!isGameOver && !isNeedToWait) {
             addEvents(EventType.PLAYER_TURN, currPlayer.getName(), ZERO);
-
             if (!currPlayer.isInParking()) {
                 int[] diecResult = this.spesificGame.rollTheDice();
                 addEventsDiseRoll(EventType.DICE_ROLL, currPlayer.getName(), diecResult);
@@ -437,7 +436,7 @@ class MonopolyWS {
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-//                        timing();
+                        timing();
                     } else {
                         buyHouse(citySquar, currentPlayer);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
@@ -447,7 +446,7 @@ class MonopolyWS {
                         String msg = "Do You Want To Buy " + citySquar.getName() + " (price " + citySquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-//                         timing();
+                        timing();
                     } else {
                         buyCity(square, currentPlayer);
                     }
@@ -461,7 +460,7 @@ class MonopolyWS {
                     String msg = "Do You Want To Buy " + assetSquar.getName() + " (price " + assetSquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                     addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                     isNeedToWait = true;
-//                   timing();
+                    timing();
                 } else {
                     buyTrnsportionOrUtility(square, currentPlayer.getSqureNum(), currentPlayer);
                 }
