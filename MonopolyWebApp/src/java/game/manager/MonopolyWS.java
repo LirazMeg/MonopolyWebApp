@@ -110,17 +110,23 @@ class MonopolyWS {
         setGameDetails(GameStatus.WAITING);
 
         if (isGameFull()) {
-            //creat all the cumputers players
-            for (int i = 0; i < details.getComputerizedPlayers(); i++) {
-                spesificGame.addPlayerToGame(CUMPUTER_PLAYER + (i + 1), false);
+            try {
+                //creat all the cumputers players
+                for (int i = 0; i < details.getComputerizedPlayers(); i++) {
+                    spesificGame.addPlayerToGame(CUMPUTER_PLAYER + (i + 1), false);
+                }
+                setGameDetails(GameStatus.ACTIVE);
+                events.clear();
+                initNewGame();
+                initCurrentPlayerInSpecificGame();
+                addEvents(EventType.GAME_START, spesificGame.getCurrentPlayer().getName(), ZERO);
+                addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
+                //timing();
+                doIterion();
+            } catch (Exception ex) {
+                Logger.getLogger(MonopolyWS.class.getName()).log(Level.SEVERE, null, ex);
+                String exp = ex.getMessage();
             }
-            setGameDetails(GameStatus.ACTIVE);
-            events.clear();
-            initNewGame();
-            initCurrentPlayerInSpecificGame();
-            addEvents(EventType.GAME_START, spesificGame.getCurrentPlayer().getName(), ZERO);
-            addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
-            timing();
         }
         return res;
     }
@@ -200,7 +206,7 @@ class MonopolyWS {
 
     }
 
-    private void doIterion() throws Exception {
+    public void doIterion() throws Exception {
         Player currPlayer = this.spesificGame.getCurrentPlayer();
         boolean isGameOver = this.spesificGame.checkIfIsGameOver();
         boolean isNeedToWait = false;

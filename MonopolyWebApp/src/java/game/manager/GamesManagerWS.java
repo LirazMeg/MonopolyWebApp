@@ -173,35 +173,45 @@ public class GamesManagerWS {
     }
 
     public void buy(int playerID, int eventID, boolean buy) throws InvalidParameters_Exception {
-        String gameName;
-        MonopolyWS currGame;
-        if (buy) {
-            if (!this.playersContainer.containsKey(playerID)) {
-                throw new InvalidParameters_Exception("Player is not exists.", null);
-            } else if (!this.playersIdAsGameName.containsKey(playerID)) {
-                throw new InvalidParameters_Exception("Game is not exists.", null);
-            } else if (!this.gamesContainer.containsKey(this.playersIdAsGameName.get(playerID))) {
-                throw new InvalidParameters_Exception("Game is not exists.", null);
-            } else {
-                gameName = this.playersIdAsGameName.get(playerID);
-                currGame = this.gamesContainer.get(gameName);
-                Player currPlayer = this.playersContainer.get(playerID);
-                int sizeOfEvents = currGame.getEventListSize();
-
-                if (eventID > sizeOfEvents && eventID < 0) {
-                    throw new InvalidParameters_Exception("Iligal event.", null);
+        try {
+            String gameName;
+            MonopolyWS currGame;
+            if (buy) {
+                if (!this.playersContainer.containsKey(playerID)) {
+                    throw new InvalidParameters_Exception("Player is not exists.", null);
+                } else if (!this.playersIdAsGameName.containsKey(playerID)) {
+                    throw new InvalidParameters_Exception("Game is not exists.", null);
+                } else if (!this.gamesContainer.containsKey(this.playersIdAsGameName.get(playerID))) {
+                    throw new InvalidParameters_Exception("Game is not exists.", null);
                 } else {
-                    List<Event> events = currGame.getEvents(eventID);
-                    if (events.size() != 1) {
+                    gameName = this.playersIdAsGameName.get(playerID);
+                    currGame = this.gamesContainer.get(gameName);
+                    Player currPlayer = this.playersContainer.get(playerID);
+                    int sizeOfEvents = currGame.getEventListSize();
+                    
+                    if (eventID > sizeOfEvents && eventID < 0) {
                         throw new InvalidParameters_Exception("Iligal event.", null);
                     } else {
-                        currGame.buy(currPlayer, events.get(0));
+                        List<Event> events = currGame.getEvents(eventID);
+                        if (events.size() != 1) {
+                            throw new InvalidParameters_Exception("Iligal event.", null);
+                        } else {
+                            currGame.buy(currPlayer, events.get(0));
+                        }
                     }
                 }
+                // dosnt want to buy
+            } else {
+                //do nothing
             }
-            // dosnt want to buy
-        } else {
+            
+            gameName = this.playersIdAsGameName.get(playerID);
+            currGame = this.gamesContainer.get(gameName);
+            currGame.doIterion();
+        } catch (Exception ex) {
+            Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     public void resign(int playerId) throws ws.monopoly.InvalidParameters_Exception, Exception {
