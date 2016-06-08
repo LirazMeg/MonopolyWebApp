@@ -34,6 +34,7 @@
       </wsimport-options>
     </service>
   </services>
-  <clients/>
+  <clients>
+  </clients>
   <jsr109>false</jsr109>
 </jax-ws>
