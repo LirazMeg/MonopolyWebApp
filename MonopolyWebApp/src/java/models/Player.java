@@ -143,7 +143,6 @@ public abstract class Player {
     }
 
     public void move(int numberOfSteps, boolean isCanPasByStart) {
-
         this.squreNum = this.squreNum + numberOfSteps;
         if (this.squreNum > 36 && isCanPasByStart) {//// the player pass on start square
             addToAmount(200);

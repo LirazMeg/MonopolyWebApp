@@ -68,7 +68,7 @@ public class gameWS {
     }
 
     public void buy(int arg0, int arg1, boolean arg2) throws ws.monopoly.InvalidParameters_Exception {
-        this.manager.buy(arg1, arg1, arg2);
+        this.manager.buy(arg0, arg1, arg2);
     }
 
 }

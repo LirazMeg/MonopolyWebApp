@@ -120,9 +120,10 @@ class MonopolyWS {
                 initNewGame();
                 initCurrentPlayerInSpecificGame();
                 addEvents(EventType.GAME_START, spesificGame.getCurrentPlayer().getName(), ZERO);
-                addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
-                //timing();
+                //       addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
+
                 doIterion();
+
             } catch (Exception ex) {
                 Logger.getLogger(MonopolyWS.class.getName()).log(Level.SEVERE, null, ex);
                 String exp = ex.getMessage();
@@ -186,7 +187,7 @@ class MonopolyWS {
             this.spesificGame.nextPlayerTurn();
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
                 addEvents(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), ZERO);
-                addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
+                //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
                 doIterion();
 
@@ -210,7 +211,7 @@ class MonopolyWS {
         Player currPlayer = this.spesificGame.getCurrentPlayer();
         boolean isGameOver = this.spesificGame.checkIfIsGameOver();
         boolean isNeedToWait = false;
-        while (!isGameOver && !isNeedToWait) {
+        while (!isGameOver) {
             addEvents(EventType.PLAYER_TURN, currPlayer.getName(), ZERO);
             if (!currPlayer.isInParking()) {
                 int[] diecResult = this.spesificGame.rollTheDice();
@@ -224,7 +225,7 @@ class MonopolyWS {
                         currentPlayerHaveGetOutCard(currPlayer);
                         isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
                     } else {
-                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), true, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
+                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), false, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
                     }
                 } else {
                     isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
@@ -234,6 +235,7 @@ class MonopolyWS {
             // cheacke if player is still in the game - or remove player from game list
             handelPlayerPresence(currPlayer);
             this.spesificGame.nextPlayerTurn();// continue to next player
+            currPlayer = this.spesificGame.getCurrentPlayer();
             isGameOver = this.spesificGame.checkIfIsGameOver();
         }
     }
@@ -306,7 +308,7 @@ class MonopolyWS {
         boolean isNeedToWait = false;
         currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
         SquareBase currentSqure = this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(currentPlayer.getSqureNum());
-        addEventsMove(EventType.MOVE, currentPlayer.getName(), currentPlayer.getSqureNum(), false, "", ZERO);
+        addEventsMove(EventType.MOVE, currentPlayer.getName(), currentPlayer.getSqureNum(), true, "", ZERO);
 
         currentSqure.stepOnMe(currentPlayer); //the square after movment 
 
@@ -326,7 +328,7 @@ class MonopolyWS {
                 currentPlayer.pay(currentSquareType.getAsset().getOwner(), stayCost);
                 boolean paymemtFromUser = true;
                 String paymentToPlayerName = currentSquareType.getAsset().getOwner().getName();
-                addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymemtFromUser, paymentToPlayerName, (int) stayCost, ZERO);
+                addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymemtFromUser, paymentToPlayerName, (int) stayCost, ZERO, null);
             } else if (currentPlayer.isIsPlayerCanBuySquare()) { //has the option to buy 
                 if (currentPlayer.isPlayerHaveTheMany(currentSquareType.getAsset().getCost())) {
                     isNeedToWait = buyingAssetOffer(currentSquareType, this.spesificGame.getCurrentPlayer().getSqureNum());
@@ -369,6 +371,7 @@ class MonopolyWS {
         Event eventDiceRes = UtilitiesWS.createEvent(events.size(), type, playerName, ZERO);
         eventDiceRes.setFirstDiceResult(diceRes[0]);
         eventDiceRes.setSecondDiceResult(diceRes[1]);
+        eventDiceRes.setEventMessage("Your Dice Result " + diceRes[0] + ", " + diceRes[1]);
         events.add(eventDiceRes);
     }
 
@@ -378,19 +381,20 @@ class MonopolyWS {
         this.events.add(eventToAdd);
     }
 
-    private void addEventsMove(EventType type, String playerName, int squreNum, boolean isInJail, String msg, int timoutCount) {
+    private void addEventsMove(EventType type, String playerName, int squreNum, boolean isPlayerMove, String msg, int timoutCount) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timoutCount);
         eventToAdd.setNextBoardSquareID(squreNum);
-        eventToAdd.setPlayerMove(isInJail);
+        eventToAdd.setPlayerMove(isPlayerMove);
         eventToAdd.setEventMessage(msg);
         this.events.add(eventToAdd);
     }
 
-    private void addEventsPayment(EventType type, String playerName, boolean paymemtFromUser, String paymentToPlayerName, int amount, int timountCount) {
+    private void addEventsPayment(EventType type, String playerName, boolean paymemtFromUser, String paymentToPlayerName, int amount, int timountCount, String msg) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timountCount);
         eventToAdd.setPaymentAmount(amount);
         eventToAdd.setPaymentToPlayerName(paymentToPlayerName);
         eventToAdd.setPaymemtFromUser(paymemtFromUser);
+        eventToAdd.setEventMessage(msg);
         this.events.add(eventToAdd);
     }
 
@@ -442,7 +446,7 @@ class MonopolyWS {
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-                        timing();
+                        //    timing();
                     } else {
                         buyHouse(citySquar, currentPlayer);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
@@ -452,7 +456,7 @@ class MonopolyWS {
                         String msg = "Do You Want To Buy " + citySquar.getName() + " (price " + citySquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-                        timing();
+                        //  timing();
                     } else {
                         buyCity(square, currentPlayer);
                     }
@@ -466,7 +470,7 @@ class MonopolyWS {
                     String msg = "Do You Want To Buy " + assetSquar.getName() + " (price " + assetSquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                     addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                     isNeedToWait = true;
-                    timing();
+                    //   timing();
                 } else {
                     buyTrnsportionOrUtility(square, currentPlayer.getSqureNum(), currentPlayer);
                 }
@@ -481,7 +485,7 @@ class MonopolyWS {
         for (Player player : this.spesificGame.getPlayers()) {
             if (!player.equals(this.spesificGame.getCurrentPlayer())) {
                 player.pay(this.spesificGame.getCurrentPlayer(), sum);
-                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), paymemtFromUser, player.getName(), (int) sum, ZERO);
+                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), paymemtFromUser, player.getName(), (int) sum, ZERO, null);
                 this.spesificGame.handelPlayerPresence(player);
             }
         }
@@ -494,7 +498,7 @@ class MonopolyWS {
             substractFromAllPlayersAmount(sum);
         } else if (type == MonetaryCard.Who.TREASURY) {
             this.spesificGame.getCurrentPlayer().addToAmount(sum);
-            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), false, currentPlayer.getName(), (int) sum, ZERO);
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), false, currentPlayer.getName(), (int) sum, ZERO, null);
         }
     }
 
@@ -561,8 +565,8 @@ class MonopolyWS {
         String paymentToPlayerName = "";
         if (type.equals(MonetaryCard.Who.TREASURY)) {
             this.spesificGame.getCurrentPlayer().payToTreasury(sum);
-            //when player need to pay to truasury paymentToPlayerName= empty string
-            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), pymentFromUser, paymentToPlayerName, (int) sum, ZERO);
+            String msg = "Just Pay To Treasury " + sum + " Nis";
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), pymentFromUser, paymentToPlayerName, (int) sum, ZERO, msg);
         } else if (type.equals(MonetaryCard.Who.PLAYERS)) {
             payToAllPlayers(sum);
         }
@@ -572,8 +576,9 @@ class MonopolyWS {
         boolean pymentFromUser = true;
         for (Player player : this.spesificGame.getPlayers()) {
             if (!player.equals(this.spesificGame.getCurrentPlayer())) {
+                String msg = "Just pay to " + player.getName() + " " + sum + " Nis.";
                 this.spesificGame.getCurrentPlayer().pay(player, sum);
-                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), pymentFromUser, player.getName(), (int) sum, ZERO);
+                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), pymentFromUser, player.getName(), (int) sum, ZERO, msg);
             }
         }
     }
