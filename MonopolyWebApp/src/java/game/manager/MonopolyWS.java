@@ -211,7 +211,7 @@ class MonopolyWS {
         Player currPlayer = this.spesificGame.getCurrentPlayer();
         boolean isGameOver = this.spesificGame.checkIfIsGameOver();
         boolean isNeedToWait = false;
-        while (!isGameOver) {
+        while (!isGameOver && !isNeedToWait) {
             addEvents(EventType.PLAYER_TURN, currPlayer.getName(), ZERO);
             if (!currPlayer.isInParking()) {
                 int[] diecResult = this.spesificGame.rollTheDice();
@@ -224,11 +224,13 @@ class MonopolyWS {
                         addEventsWitheMsg(EventType.PLAYER_USED_GET_OUT_OF_JAIL_CARD, currPlayer.getName(), "You Use Your Get Out Of Jail Card", ZERO);
                         currentPlayerHaveGetOutCard(currPlayer);
                         isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
+                      
                     } else {
                         addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), false, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
                     }
                 } else {
                     isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
+                   
                 }
 
             }
@@ -536,6 +538,7 @@ class MonopolyWS {
             isCanPasByStart = false;
             numOfSteps = this.spesificGame.getMonopolyGame().getBoard().getNumberOfStepstToSquareByType(
                     currentPlayer.getSqureNum(), new models.JailSlashFreeSpaceSquareType().toString());
+            addEvents(EventType.GO_TO_JAIL,currentPlayer.getName(),ZERO);
 
         } else if (type.equals(models.GotoCard.To.NEXT_WARRANT)) {
             isCanPasByStart = false;

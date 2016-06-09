@@ -192,7 +192,7 @@ public class GamesManagerWS {
                     if (eventID > sizeOfEvents && eventID < 0) {
                         throw new InvalidParameters_Exception("Iligal event.", null);
                     } else {
-                        List<Event> events = currGame.getEvents(eventID);
+                        List<Event> events = currGame.getEvents(eventID-1);
                         if (events.size() != 1) {
                             throw new InvalidParameters_Exception("Iligal event.", null);
                         } else {
