@@ -410,6 +410,8 @@ class MonopolyWS {
     public void buyHouse(CityType squareCity, Player player) {
         player.purchase(squareCity, squareCity.getHouseCost());
         squareCity.addToCounterOfHouse();
+        String msg = "Just Bought House Number " + squareCity.getCounterOfHouse() + " In " + squareCity.getName() + ", " + squareCity.getCuntryName();
+        addEventsWitheMsg(EventType.HOUSE_BOUGHT, player.getName(), msg, ZERO);
 
     }
 
@@ -426,8 +428,8 @@ class MonopolyWS {
         CityType city = (CityType) square.getAsset();
         player.purchase(city, city.getCost());
         city.setHaveOwner(player);
-        return "Just Bought " + city.getName();
-        //     addEventsWitheMsg(EventType.ASSET_BOUGHT, player.getName(),msg, ZERO);
+        return "Just Bought " + city.getName() + ", " + city.getCuntryName();
+       
     }
 
     private String buyTrnsportionOrUtility(SquareType square, int squareNum, Player player) {
@@ -599,7 +601,6 @@ class MonopolyWS {
         switch (event.getType()) {
             case PROPMT_PLAYER_TO_BY_ASSET:
                 buyAsset(player, square, event.getBoardSquareID());
-                addEvents(EventType.ASSET_BOUGHT, player.getName(), ZERO);
                 break;
             case PROPMPT_PLAYER_TO_BY_HOUSE:
                 buyHouse((CityType) square.getAsset(), player);
