@@ -224,13 +224,13 @@ class MonopolyWS {
                         addEventsWitheMsg(EventType.PLAYER_USED_GET_OUT_OF_JAIL_CARD, currPlayer.getName(), "You Use Your Get Out Of Jail Card", ZERO);
                         currentPlayerHaveGetOutCard(currPlayer);
                         isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
-                      
+
                     } else {
                         addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), false, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
                     }
                 } else {
                     isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
-                   
+
                 }
 
             }
@@ -422,16 +422,19 @@ class MonopolyWS {
         return canBuyCity;
     }
 
-    public void buyCity(SquareType square, Player player) {
+    public String buyCity(SquareType square, Player player) {
         CityType city = (CityType) square.getAsset();
         player.purchase(city, city.getCost());
         city.setHaveOwner(player);
+        return "Just Bought " + city.getName();
+        //     addEventsWitheMsg(EventType.ASSET_BOUGHT, player.getName(),msg, ZERO);
     }
 
-    private void buyTrnsportionOrUtility(SquareType square, int squareNum, Player player) {
+    private String buyTrnsportionOrUtility(SquareType square, int squareNum, Player player) {
         SquareType squreType = (SquareType) this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(squareNum);
         squreType.getAsset().setHaveOwner(player);
         player.purchase(square.getAsset(), square.getAsset().getCost());
+        return "Just Bouth " + squreType.getAsset().getName();
     }
 
     public boolean buyingAssetOffer(SquareType square, int squreNum) {// in this case can buy only house
@@ -538,7 +541,7 @@ class MonopolyWS {
             isCanPasByStart = false;
             numOfSteps = this.spesificGame.getMonopolyGame().getBoard().getNumberOfStepstToSquareByType(
                     currentPlayer.getSqureNum(), new models.JailSlashFreeSpaceSquareType().toString());
-            addEvents(EventType.GO_TO_JAIL,currentPlayer.getName(),ZERO);
+            addEvents(EventType.GO_TO_JAIL, currentPlayer.getName(), ZERO);
 
         } else if (type.equals(models.GotoCard.To.NEXT_WARRANT)) {
             isCanPasByStart = false;
@@ -596,6 +599,7 @@ class MonopolyWS {
         switch (event.getType()) {
             case PROPMT_PLAYER_TO_BY_ASSET:
                 buyAsset(player, square, event.getBoardSquareID());
+                addEvents(EventType.ASSET_BOUGHT, player.getName(), ZERO);
                 break;
             case PROPMPT_PLAYER_TO_BY_HOUSE:
                 buyHouse((CityType) square.getAsset(), player);
@@ -607,17 +611,19 @@ class MonopolyWS {
     }
 
     private void buyAsset(Player player, SquareType square, int squreNum) {
+        String msg = "";
         switch (square.getType()) {
             case CITY:
-                buyCity(square, player);
+                msg = buyCity(square, player);
                 break;
             case UTILITY:
             case TRANSPORTATION:
-                buyTrnsportionOrUtility(square, squreNum, player);
+                msg = buyTrnsportionOrUtility(square, squreNum, player);
                 break;
             default:
                 throw new AssertionError(square.getType().name());
         }
+        addEventsWitheMsg(EventType.ASSET_BOUGHT, player.getName(), msg, ZERO);
     }
 
     private void handelPlayerPresence(Player currPlayer) {
