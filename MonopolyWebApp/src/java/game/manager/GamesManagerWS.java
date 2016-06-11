@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,10 +80,14 @@ public class GamesManagerWS {
         return br.toString();
     }
 
-    public java.lang.String getBoardXML() {
+   public java.lang.String getBoardXML() {
         BufferedReader br = null;
         try {
-            br = new BufferedReader(new FileReader(new File("monopoly_config.xml")));
+            //String xmlFile = "/" + RESOURCES + "/monopoly_config.xml";
+            URL url = GamesManagerWS.class.getResource("/resources/monopoly_config.xml");
+            File input = new File(url.getPath());
+            FileReader dir = new FileReader(input);
+            br = new BufferedReader(dir);
             String line;
             StringBuilder sb = new StringBuilder();
 
