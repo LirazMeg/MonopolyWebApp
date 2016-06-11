@@ -127,7 +127,12 @@ public abstract class Player {
     }
 
     public boolean isInParking() {
-        return isInParking;
+        boolean res = false;
+        if (this.isInParking) {
+            this.isInParking = false;
+            res = true;
+        }
+        return res;
     }
 
     public void setIsInJail(boolean isInJail) {
