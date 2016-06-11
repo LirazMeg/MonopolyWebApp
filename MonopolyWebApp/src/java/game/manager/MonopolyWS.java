@@ -459,10 +459,13 @@ class MonopolyWS {
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
+                      
                         //    timing();
                     } else {
                         buyHouse(citySquar, currentPlayer, squreNum);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
+                          int cost = (int) citySquar.getHouseCost();
+                        addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), "", (-1) * cost, ZERO, "You Just Pay To Treasury "+cost+"Nis.");
                     }
                 } else if (checkIfPlayerCanBuyCity(square)) {
                     if (currentPlayer.isHumen()) {
@@ -471,7 +474,10 @@ class MonopolyWS {
                         isNeedToWait = true;
                         //  timing();
                     } else {
-                        buyCity(square, currentPlayer);
+                        String msg = buyCity(square, currentPlayer);
+                        addEventsBought(EventType.ASSET_BOUGHT, currentPlayer.getName(), squreNum, msg, ZERO);
+                        int cost = (int) citySquar.getCost();
+                        addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), "", (-1) * cost, ZERO, "You Just Pay To Treasury "+cost+"Nis.");
                     }
                 }
                 break;
