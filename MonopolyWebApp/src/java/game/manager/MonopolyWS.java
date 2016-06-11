@@ -614,18 +614,22 @@ class MonopolyWS {
     void buy(Player player, Event event) {
         SquareType square = (SquareType) this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(event.getBoardSquareID());
         int squreID = event.getBoardSquareID();
-
+        int cost = 0;
         switch (event.getType()) {
             case PROPMT_PLAYER_TO_BY_ASSET:
                 buyAsset(player, square, squreID);
+                cost = (int) square.getAsset().getCost();
                 break;
             case PROPMPT_PLAYER_TO_BY_HOUSE:
-                buyHouse((CityType) square.getAsset(), player, squreID);
+                CityType city = (CityType) square.getAsset();
+                buyHouse(city, player, squreID);
+                cost = (int) city.getHouseCost();
                 break;
             default:
                 throw new AssertionError(event.getType().name());
-
         }
+        String msg = "You Just Pay To Treasury " + cost + " Nis";
+        addEventsPayment(EventType.PAYMENT, player.getName(), "", (-1) * cost, ZERO, msg);
     }
 
     private void buyAsset(Player player, SquareType square, int squreNum) {

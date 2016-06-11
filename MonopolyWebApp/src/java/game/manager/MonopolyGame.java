@@ -150,33 +150,6 @@ public class MonopolyGame {
         }
     }
 
-//    public void makeMove(int numOfSteps, boolean isCanPasStart) throws Exception {
-//        this.currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
-//        //showCurrentLocionOfPlayerOnBoard(false);
-//        SquareBase currentSqure = this.monopolyGame.getBoard().getSqureBaseBySqureNum(this.currentPlayer.getSqureNum());
-//        currentSqure.stepOnMe(this.currentPlayer); //the square after movment 
-//
-//        if (currentSqure.getClass().equals(SquareType.class)) {
-//            SquareType currentSquareType = (SquareType) currentSqure;
-//
-//            if (currentPlayer.isDoesPlayerNeedToPay()) {// current player isn't the owner and the squre has a owner
-//                //pay to owner
-//                long stayCost = getStayCostForAsset(currentSquareType);
-//                currentPlayer.pay(currentSquareType.getAsset().getOwner(), stayCost);
-//            } else if (currentPlayer.isIsPlayerCanBuySquare()) { //has the option to buy 
-//                if (currentPlayer.isPlayerHaveTheMany(currentSquareType.getAsset().getCost())) {
-//                    buyingAssetOffer(currentSquareType, this.currentPlayer.getSqureNum());
-//                } else {
-//                    ConsolUI.msgCantBuy();
-//                }
-//            } else if (currentPlayer.isIsNeedToTakeSupriesCard()) {
-//                actionSurpriseCard(this.monopolyGame.getSurpries().getCard());
-//            } else if (currentPlayer.isIsNeedToTakeWarrentCard()) {
-//                actionWarrantCard(this.monopolyGame.getWarrant().getCard());
-//            }
-//            currentPlayer.setUpFlages();
-//        }
-//    }
     public boolean checkIfIsGameOver() {
         boolean result = false;
         if ((this.joinNumber == ONE && this.numComputerizedPlayers == ZERO) || (this.joinNumber == ZERO)) {
