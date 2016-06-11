@@ -518,21 +518,21 @@ class MonopolyWS {
 
     public void actionSurpriseCard(CardBase card, Player currentPlayer) throws Exception {
 
-        String msg = "";
+        String msg = "Surpeise Card: ";
 
         if (card.getClass().equals(models.MonetaryCard.class)) {
             models.MonetaryCard monoteryCard = (models.MonetaryCard) card;
-            msg = String.format(monoteryCard.getText(), monoteryCard.getSum());
+            msg += String.format(monoteryCard.getText(), monoteryCard.getSum());
             addEventsWitheMsg(EventType.SURPRISE_CARD, currentPlayer.getName(), msg, ZERO);
             actionMonoteryCardFromSurpeiseCards(monoteryCard.getSum(), monoteryCard.getType());
         } else if (card.getClass().equals(models.GetOutOfJailCard.class)) {
-            msg = card.getText();
+            msg += card.getText();
             addEventsWitheMsg(EventType.SURPRISE_CARD, currentPlayer.getName(), msg, ZERO);
             addEvents(EventType.GO_TO_JAIL, currentPlayer.getName(), ZERO);
             currentPlayer.setIsHaveGetOutOfJailCard(true, (models.GetOutOfJailCard) card);
         } else if (card.getClass().equals(models.GotoCard.class)) {
             models.GotoCard gotoCard = (models.GotoCard) card;
-            msg = gotoCard.getText();
+            msg += gotoCard.getText();
             addEventsWitheMsg(EventType.SURPRISE_CARD, currentPlayer.getName(), msg, ZERO);
             actionGoToCard(gotoCard.getType());
         }
@@ -557,7 +557,7 @@ class MonopolyWS {
             isCanPasByStart = false;
             numOfSteps = this.spesificGame.getMonopolyGame().getBoard().getNumberOfStepstToSquareByType(
                     currentPlayer.getSqureNum(), new models.JailSlashFreeSpaceSquareType().toString());
-            addEvents(EventType.GO_TO_JAIL, currentPlayer.getName(), ZERO);
+            addEventsWitheMsg(EventType.GO_TO_JAIL, currentPlayer.getName(), "Go To Jail", ZERO);
 
         } else if (type.equals(models.GotoCard.To.NEXT_WARRANT)) {
             isCanPasByStart = false;
@@ -569,15 +569,15 @@ class MonopolyWS {
     }
 
     private void actionWarrantCard(CardBase card, Player currentPlayer) throws Exception {
-        String msg = "";
+        String msg = "Warrant Card: ";
         if (card.getClass().equals(models.MonetaryCard.class)) {
             models.MonetaryCard monoteryCard = (models.MonetaryCard) card;
-            msg = String.format(monoteryCard.getText(), monoteryCard.getSum());
+            msg += String.format(monoteryCard.getText(), monoteryCard.getSum());
             addEventsWitheMsg(EventType.WARRANT_CARD, currentPlayer.getName(), msg, ZERO);
             actionMonoteryCardFromWarrantCards(monoteryCard.getSum(), monoteryCard.getType());
         } else if (card.getClass().equals(models.GotoCard.class)) {
             models.GotoCard gotoCard = (models.GotoCard) card;
-            msg = gotoCard.getText();
+            msg += gotoCard.getText();
             addEventsWitheMsg(EventType.WARRANT_CARD, currentPlayer.getName(), msg, ZERO);
             actionGoToCard(gotoCard.getType());
         }
