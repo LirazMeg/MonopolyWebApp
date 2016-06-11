@@ -328,15 +328,15 @@ class MonopolyWS {
                 //pay to owner
                 long stayCost = getStayCostForAsset(currentSquareType);
                 currentPlayer.pay(currentSquareType.getAsset().getOwner(), stayCost);
-                boolean paymemtFromUser = true;
                 String paymentToPlayerName = currentSquareType.getAsset().getOwner().getName();
-                addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymemtFromUser, paymentToPlayerName, (int) stayCost, ZERO, null);
+                String msg = "Just Pay To " + paymentToPlayerName + " " + stayCost + " Nis";
+                addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymentToPlayerName, (-1) * (int) stayCost, ZERO, msg);
             } else if (currentPlayer.isIsPlayerCanBuySquare()) { //has the option to buy 
                 if (currentPlayer.isPlayerHaveTheMany(currentSquareType.getAsset().getCost())) {
                     isNeedToWait = buyingAssetOffer(currentSquareType, this.spesificGame.getCurrentPlayer().getSqureNum());
 
                 } else {
-                    // ConsolUI.msgCantBuy();
+
                 }
             } else if (currentPlayer.isIsNeedToTakeSupriesCard()) {
                 CardBase card = this.spesificGame.getMonopolyGame().getSurpries().getCard();
@@ -391,11 +391,11 @@ class MonopolyWS {
         this.events.add(eventToAdd);
     }
 
-    private void addEventsPayment(EventType type, String playerName, boolean paymemtFromUser, String paymentToPlayerName, int amount, int timountCount, String msg) {
+    private void addEventsPayment(EventType type, String playerName, String paymentToPlayerName, int amount, int timountCount, String msg) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timountCount);
         eventToAdd.setPaymentAmount(amount);
         eventToAdd.setPaymentToPlayerName(paymentToPlayerName);
-        eventToAdd.setPaymemtFromUser(paymemtFromUser);
+        //    eventToAdd.setPaymemtFromUser(paymemtFromUser);
         eventToAdd.setEventMessage(msg);
         this.events.add(eventToAdd);
     }
@@ -429,7 +429,7 @@ class MonopolyWS {
         player.purchase(city, city.getCost());
         city.setHaveOwner(player);
         return "Just Bought " + city.getName() + ", " + city.getCuntryName();
-       
+
     }
 
     private String buyTrnsportionOrUtility(SquareType square, int squareNum, Player player) {
@@ -488,11 +488,11 @@ class MonopolyWS {
     }
 
     private void substractFromAllPlayersAmount(long sum) {
-        boolean paymemtFromUser = false;
         for (Player player : this.spesificGame.getPlayers()) {
             if (!player.equals(this.spesificGame.getCurrentPlayer())) {
                 player.pay(this.spesificGame.getCurrentPlayer(), sum);
-                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), paymemtFromUser, player.getName(), (int) sum, ZERO, null);
+                String msg = "You Got " + sum + " Nis From " + player.getName();
+                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), player.getName(), (int) sum, ZERO, msg);
                 this.spesificGame.handelPlayerPresence(player);
             }
         }
@@ -505,7 +505,8 @@ class MonopolyWS {
             substractFromAllPlayersAmount(sum);
         } else if (type == MonetaryCard.Who.TREASURY) {
             this.spesificGame.getCurrentPlayer().addToAmount(sum);
-            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), false, currentPlayer.getName(), (int) sum, ZERO, null);
+            String msg = "You Got " + sum + "  Nis From Treasury.";
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), currentPlayer.getName(), (int) sum, ZERO, msg);
         }
     }
 
@@ -569,24 +570,22 @@ class MonopolyWS {
     public void actionMonoteryCardFromWarrantCards(long sum, MonetaryCard.Who type) {
         long totalSubstract = 0;
         Player currentPlayer = this.spesificGame.getCurrentPlayer();
-        boolean pymentFromUser = true;
         String paymentToPlayerName = "";
         if (type.equals(MonetaryCard.Who.TREASURY)) {
             this.spesificGame.getCurrentPlayer().payToTreasury(sum);
-            String msg = "Just Pay To Treasury " + sum + " Nis";
-            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), pymentFromUser, paymentToPlayerName, (int) sum, ZERO, msg);
+            String msg = "Just Pay To Treasury " + sum + " Nis.";
+            addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymentToPlayerName, (-1) * (int) sum, ZERO, msg);
         } else if (type.equals(MonetaryCard.Who.PLAYERS)) {
             payToAllPlayers(sum);
         }
     }
 
     private void payToAllPlayers(long sum) {
-        boolean pymentFromUser = true;
         for (Player player : this.spesificGame.getPlayers()) {
             if (!player.equals(this.spesificGame.getCurrentPlayer())) {
-                String msg = "Just pay to " + player.getName() + " " + sum + " Nis.";
+                String msg = "Just Pay To " + player.getName() + " " + sum + " Nis.";
                 this.spesificGame.getCurrentPlayer().pay(player, sum);
-                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), pymentFromUser, player.getName(), (int) sum, ZERO, msg);
+                addEventsPayment(EventType.PAYMENT, this.spesificGame.getCurrentPlayer().getName(), player.getName(), (-1) * (int) sum, ZERO, msg);
             }
         }
     }
