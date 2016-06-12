@@ -650,7 +650,7 @@ class MonopolyWS {
     }
 
     private void handelPlayerPresence(Player currPlayer) {
-        if (currPlayer.isQuit()) {
+        if (currPlayer.isQuit()&& !currPlayer.isResign()) {
             this.spesificGame.handelPlayerPresence(currPlayer);
             addEventsWitheMsg(EventType.PLAYER_LOST, currPlayer.getName(), "You Lost In The Game", ZERO);
         }
