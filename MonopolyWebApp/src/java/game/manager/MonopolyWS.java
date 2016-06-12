@@ -176,7 +176,7 @@ class MonopolyWS {
     }
 
     private void actionMethod() throws Exception {
-        spesificGame.getCurrentPlayer().setResign(true);
+        this.spesificGame.getCurrentPlayer().setResign(true);
         removePlayerThatResignFromList();
         // sendToClient("Clear");
     }
@@ -187,26 +187,15 @@ class MonopolyWS {
         if (getGameDetails().getStatus().equals(GameStatus.WAITING)) {
             spesificGame.removePlayerThatResignFromList();
         } else {// in case of active game
-            addEvents(EventType.PLAYER_RESIGNED, this.spesificGame.getCurrentPlayer().getName(), ZERO);
+            addEventsWitheMsg(EventType.PLAYER_RESIGNED, this.spesificGame.getCurrentPlayer().getName(), "You Resinged From Game", ZERO);
             this.spesificGame.nextPlayerTurn();
+            addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
-                addEvents(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), ZERO);
+                addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), this.spesificGame.getWinnerName() + " You Are The Winner !!!!!", ZERO);
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
                 doIterion();
-
             }
-
-//            if (doComputerIterations()) {
-//                addEvents(EventType.GAME_WINNER, ZERO, spesificGame.getWinnerName());
-//                addEvents(EventType.GAME_OVER, ZERO, spesificGame.getPlayer(lastIndex));
-//            } else {
-//                spesificGame.removeResignFromList();
-//                if (currentPlayerNumber != Boots.ZERO) {
-//                    currentPlayerNumber = (lastIndex) % spesificGame.getPlayersListSize();
-//                }
-//            }
-            //     spesificGame.clearSavedReturnTiles();
         }
 
     }
@@ -663,7 +652,7 @@ class MonopolyWS {
     private void handelPlayerPresence(Player currPlayer) {
         if (currPlayer.isQuit()&& !currPlayer.isResign()) {
             this.spesificGame.handelPlayerPresence(currPlayer);
-            addEvents(EventType.PLAYER_LOST, currPlayer.getName(), ZERO);
+            addEventsWitheMsg(EventType.PLAYER_LOST, currPlayer.getName(), "You Lost In The Game", ZERO);
         }
     }
 

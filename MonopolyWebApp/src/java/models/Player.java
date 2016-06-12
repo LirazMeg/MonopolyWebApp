@@ -52,6 +52,7 @@ public abstract class Player {
 
     public void setResign(boolean resign) {
         this.resign = resign;
+        
     }
 
     public void setIsOnJailOrFreePass(boolean isOnJailOrFreePass) {
