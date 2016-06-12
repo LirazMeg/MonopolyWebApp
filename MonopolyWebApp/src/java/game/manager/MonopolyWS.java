@@ -126,13 +126,11 @@ class MonopolyWS {
                 initNewGame();
                 initCurrentPlayerInSpecificGame();
                 addEvents(EventType.GAME_START, spesificGame.getCurrentPlayer().getName(), ZERO);
-                //       addEvents(EventType.PLAYER_TURN, spesificGame.getCurrentPlayer().getName(), ZERO);
-
                 doIterion();
-
             } catch (Exception ex) {
                 Logger.getLogger(MonopolyWS.class.getName()).log(Level.SEVERE, null, ex);
                 String exp = ex.getMessage();
+                
             }
         }
         return res;
