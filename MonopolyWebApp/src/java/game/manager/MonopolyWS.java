@@ -176,20 +176,22 @@ class MonopolyWS {
     }
 
     private void actionMethod() throws Exception {
-        this.spesificGame.getCurrentPlayer().setResign(true);
+       // this.spesificGame.getCurrentPlayer().setResign(true);
         removePlayerThatResignFromList();
      
     }
 
     //todo
     public void removePlayerThatResignFromList() throws Exception {
-        int lastIndex = this.spesificGame.getPleyerIndex();
+        int lastIndex = this.spesificGame.getPleyerIndex() - 1;
+        Player currPlayer = this.spesificGame.getPlayers().get(lastIndex);
+        currPlayer.setResign(true);
         if (getGameDetails().getStatus().equals(GameStatus.WAITING)) {
             spesificGame.removePlayerThatResignFromList();
         } else {// in case of active game
-            addEventsWitheMsg(EventType.PLAYER_RESIGNED, this.spesificGame.getCurrentPlayer().getName(), "You Resinged From Game", ZERO);
-            this.spesificGame.nextPlayerTurn();
-            addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
+            addEventsWitheMsg(EventType.PLAYER_RESIGNED, currPlayer.getName(), "You Resinged From Game", ZERO);
+//            this.spesificGame.nextPlayerTurn();
+//            addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
                 addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), this.spesificGame.getWinnerName() + " You Are The Winner !!!!!", ZERO);
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
