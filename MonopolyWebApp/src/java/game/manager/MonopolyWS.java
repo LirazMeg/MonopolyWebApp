@@ -191,7 +191,7 @@ class MonopolyWS {
             this.spesificGame.nextPlayerTurn();
             addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
-                addEvents(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), ZERO);
+                addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), this.spesificGame.getWinnerName() + " You Are The Winner !!!!!", ZERO);
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
                 doIterion();
