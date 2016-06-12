@@ -176,7 +176,7 @@ class MonopolyWS {
     }
 
     private void actionMethod() throws Exception {
-        spesificGame.getCurrentPlayer().setResign(true);
+        this.spesificGame.getCurrentPlayer().setResign(true);
         removePlayerThatResignFromList();
         // sendToClient("Clear");
     }
@@ -189,6 +189,7 @@ class MonopolyWS {
         } else {// in case of active game
             addEvents(EventType.PLAYER_RESIGNED, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             this.spesificGame.nextPlayerTurn();
+            addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
                 addEvents(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), ZERO);
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
@@ -196,17 +197,6 @@ class MonopolyWS {
                 doIterion();
 
             }
-
-//            if (doComputerIterations()) {
-//                addEvents(EventType.GAME_WINNER, ZERO, spesificGame.getWinnerName());
-//                addEvents(EventType.GAME_OVER, ZERO, spesificGame.getPlayer(lastIndex));
-//            } else {
-//                spesificGame.removeResignFromList();
-//                if (currentPlayerNumber != Boots.ZERO) {
-//                    currentPlayerNumber = (lastIndex) % spesificGame.getPlayersListSize();
-//                }
-//            }
-            //     spesificGame.clearSavedReturnTiles();
         }
 
     }
