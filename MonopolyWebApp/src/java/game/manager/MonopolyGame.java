@@ -181,7 +181,7 @@ public class MonopolyGame {
             monopolyGame.removePlayerrFromTheGame(player);
             this.players.remove(this.pleyerIndex);
             this.pleyerIndex = this.pleyerIndex - 1;
-            
+
             if (player.isHumen()) {
                 this.joinNumber--;
             }
@@ -206,7 +206,7 @@ public class MonopolyGame {
 
     void createGameWS(int computerizedPlayers, int humanPlayers, int joinNumber, String name) {
         this.numOfHumanPlayers = humanPlayers;
-        this.numComputerizedPlayers = humanPlayers;
+        this.numComputerizedPlayers = computerizedPlayers;
         this.joinNumber = joinNumber;
         this.gameName = name;
     }
