@@ -174,6 +174,11 @@ public class MonopolyGame {
         return name;
     }
 
+    public String getResignWinner() {
+        String winner = this.getPlayers().get(0).getName();
+        return winner;
+    }
+
     public void handelPlayerPresence(Player player) {
         // if (player.isResign() || player.isQuit()) {
         if (player.isQuit()) {

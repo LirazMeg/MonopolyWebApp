@@ -176,7 +176,7 @@ class MonopolyWS {
     }
 
     private void actionMethod() throws Exception {
-       // this.spesificGame.getCurrentPlayer().setResign(true);
+        // this.spesificGame.getCurrentPlayer().setResign(true);
         removePlayerThatResignFromList();
         // sendToClient("Clear");
     }
@@ -193,7 +193,7 @@ class MonopolyWS {
 //            this.spesificGame.nextPlayerTurn();
 //            addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
-                addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getWinnerName(), this.spesificGame.getWinnerName() + " You Are The Winner !!!!!", ZERO);
+                addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getResignWinner(), this.spesificGame.getResignWinner() + " You Are The Winner !!!!!", ZERO);
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
                 doIterion();
@@ -652,7 +652,7 @@ class MonopolyWS {
     }
 
     private void handelPlayerPresence(Player currPlayer) {
-        if (currPlayer.isQuit()&& !currPlayer.isResign()) {
+        if (currPlayer.isQuit() && !currPlayer.isResign()) {
             this.spesificGame.handelPlayerPresence(currPlayer);
             addEventsWitheMsg(EventType.PLAYER_LOST, currPlayer.getName(), "You Lost In The Game", ZERO);
         }
