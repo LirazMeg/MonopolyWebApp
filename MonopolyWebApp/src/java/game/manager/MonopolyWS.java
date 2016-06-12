@@ -237,6 +237,9 @@ class MonopolyWS {
 
                 }
 
+            } else {
+                addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), false, "You Are In Parkink,Please Wait One More Turn!", ZERO);
+
             }
             // cheacke if player is still in the game - or remove player from game list
             handelPlayerPresence(currPlayer);
@@ -463,7 +466,7 @@ class MonopolyWS {
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
 
-                        //    timing();
+                        timing();
                     } else {
                         buyHouse(citySquar, currentPlayer, squreNum);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
@@ -475,7 +478,7 @@ class MonopolyWS {
                         String msg = "Do You Want To Buy " + citySquar.getName() + " (price " + citySquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-                        //  timing();
+                        timing();
                     } else {
                         String msg = buyCity(square, currentPlayer);
                         addEventsBought(EventType.ASSET_BOUGHT, currentPlayer.getName(), squreNum, msg, ZERO);
@@ -492,7 +495,7 @@ class MonopolyWS {
                     String msg = "Do You Want To Buy " + assetSquar.getName() + " (price " + assetSquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                     addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                     isNeedToWait = true;
-                    //   timing();
+                    timing();
                 } else {
                     buyTrnsportionOrUtility(square, currentPlayer.getSqureNum(), currentPlayer);
                 }

@@ -123,7 +123,12 @@ public abstract class Player {
     }
 
     public boolean isInJail() {
-        return this.isInJail;
+        boolean res = false;
+        if (this.isInJail) {
+            this.isInJail = false;
+            res = true;
+        }
+        return res;
     }
 
     public boolean isInParking() {
