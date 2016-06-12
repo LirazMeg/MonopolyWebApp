@@ -178,7 +178,7 @@ class MonopolyWS {
     private void actionMethod() throws Exception {
         // this.spesificGame.getCurrentPlayer().setResign(true);
         removePlayerThatResignFromList();
-        // sendToClient("Clear");
+     
     }
 
     //todo
@@ -456,7 +456,6 @@ class MonopolyWS {
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-
                         timing();
                     } else {
                         buyHouse(citySquar, currentPlayer, squreNum);
