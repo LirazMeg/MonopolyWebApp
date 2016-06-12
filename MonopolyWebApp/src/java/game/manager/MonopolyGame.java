@@ -83,7 +83,7 @@ public class MonopolyGame {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return this.players;
     }
 
     public void addPlayerToPlayersList(String playerName) {
@@ -143,6 +143,7 @@ public class MonopolyGame {
     public void removePlayerThatResignFromList() {
         for (int i = 0; i < this.players.size(); i++) {
             if (this.players.get(i).isResign()) {
+                this.players.get(i).setIsNeedToQuit(true);
                 handelPlayerPresence(this.players.get(i));
                 joinNumber--;
                 break;
