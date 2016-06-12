@@ -661,7 +661,7 @@ class MonopolyWS {
     }
 
     private void handelPlayerPresence(Player currPlayer) {
-        if (currPlayer.isQuit()) {
+        if (currPlayer.isQuit()&& !currPlayer.isResign()) {
             this.spesificGame.handelPlayerPresence(currPlayer);
             addEvents(EventType.PLAYER_LOST, currPlayer.getName(), ZERO);
         }
