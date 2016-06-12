@@ -19,7 +19,6 @@ import models.CardBase;
 import models.CityType;
 import models.GotoCard;
 import models.MonetaryCard;
-import models.MonopolyModel;
 import models.Player;
 import models.SimpleAssetType;
 import models.SquareBase;
