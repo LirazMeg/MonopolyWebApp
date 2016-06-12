@@ -187,7 +187,7 @@ class MonopolyWS {
         if (getGameDetails().getStatus().equals(GameStatus.WAITING)) {
             spesificGame.removePlayerThatResignFromList();
         } else {// in case of active game
-            addEvents(EventType.PLAYER_RESIGNED, this.spesificGame.getCurrentPlayer().getName(), ZERO);
+            addEventsWitheMsg(EventType.PLAYER_RESIGNED, this.spesificGame.getCurrentPlayer().getName(), "You Resinged From Game", ZERO);
             this.spesificGame.nextPlayerTurn();
             addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             if (!this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
@@ -195,7 +195,6 @@ class MonopolyWS {
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
                 doIterion();
-
             }
         }
 
