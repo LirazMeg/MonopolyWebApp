@@ -137,7 +137,7 @@ public class MonopolyGame {
 
     public void nextPlayerTurn() {
         this.pleyerIndex = (this.pleyerIndex + 1) % this.players.size();
-        this.currentPlayer = players.get(this.pleyerIndex);
+        this.currentPlayer = this.players.get(this.pleyerIndex);
     }
 
     public void removePlayerThatResignFromList() {

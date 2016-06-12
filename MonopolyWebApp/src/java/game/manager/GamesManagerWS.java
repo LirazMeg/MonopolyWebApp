@@ -152,10 +152,10 @@ public class GamesManagerWS {
             } else if (currentGame.isPlayerNameExist(playerName)) {
                 throw new InvalidParameters_Exception("The name " + playerName + " is already exist.", null);
             } else {
-                playersContainer.put(idPlayerCounter, currentGame.addPlayerToGame(playerName, true));
-                resKeyID = idPlayerCounter;
-                playersIdAsGameName.put(resKeyID, gameName);
-                idPlayerCounter++;
+                this.playersContainer.put(idPlayerCounter, currentGame.addPlayerToGame(playerName, true));
+                resKeyID = this.idPlayerCounter;
+                this.playersIdAsGameName.put(resKeyID, gameName);
+                this.idPlayerCounter++;
             }
         }
 

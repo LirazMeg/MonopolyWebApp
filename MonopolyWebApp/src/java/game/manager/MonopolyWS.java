@@ -119,7 +119,7 @@ class MonopolyWS {
         if (isGameFull()) {
             try {
                 //creat all the cumputers players
-                for (int i = 0; i < details.getComputerizedPlayers(); i++) {
+                for (int i = 0; i < this.details.getComputerizedPlayers(); i++) {
                     spesificGame.addPlayerToGame(CUMPUTER_PLAYER + (i + 1), false);
                 }
                 setGameDetails(GameStatus.ACTIVE);
