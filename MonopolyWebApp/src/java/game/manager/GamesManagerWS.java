@@ -82,6 +82,7 @@ public class GamesManagerWS {
 
    public java.lang.String getBoardXML() {
         BufferedReader br = null;
+        StringBuilder sb = new StringBuilder();
         try {
             //String xmlFile = "/" + RESOURCES + "/monopoly_config.xml";
             URL url = GamesManagerWS.class.getResource("/resources/monopoly_config.xml");
@@ -89,17 +90,19 @@ public class GamesManagerWS {
             FileReader dir = new FileReader(input);
             br = new BufferedReader(dir);
             String line;
-            StringBuilder sb = new StringBuilder();
+            
 
             while ((line = br.readLine()) != null) {
                 sb.append(line.trim());
+                
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return br.toString();
+       
+        return sb.toString();
     }
 
     public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) {
