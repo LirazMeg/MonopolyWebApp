@@ -145,7 +145,7 @@ public class MonopolyGame {
             if (this.players.get(i).isResign()) {
                 this.players.get(i).setIsNeedToQuit(true);
                 handelPlayerPresence(this.players.get(i));
-                joinNumber--;
+                //joinNumber--;
                 break;
             }
         }
