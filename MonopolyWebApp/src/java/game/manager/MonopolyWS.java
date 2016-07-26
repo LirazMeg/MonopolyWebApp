@@ -181,25 +181,26 @@ class MonopolyWS {
 
     }
 
-    //todo
     public void removePlayerThatResignFromList() throws Exception {
         int lastIndex = this.spesificGame.getPleyerIndex() - 1;
         Player currPlayer = this.spesificGame.getPlayers().get(lastIndex);
         currPlayer.setResign(true);
         spesificGame.removePlayerThatResignFromList();
+        //this.spesificGame.getPlayers().remove(currPlayer);
+
         if (getGameDetails().getStatus().equals(GameStatus.WAITING)) {
             spesificGame.removePlayerThatResignFromList();
         } else {// in case of active game
             addEventsWitheMsg(EventType.PLAYER_RESIGNED, currPlayer.getName(), "You Resinged From Game", ZERO);
-//            this.spesificGame.nextPlayerTurn();
-//            addEvents(EventType.PLAYER_TURN, this.spesificGame.getCurrentPlayer().getName(), ZERO);
+
             if (this.spesificGame.checkIfIsGameOver()) { // while the game is going - more ten one player
-                addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getResignWinner(), this.spesificGame.getResignWinner() + " You Are The Winner !!!!!", ZERO);
+                addEventsWitheMsg(EventType.GAME_WINNER, this.spesificGame.getResignWinner(currPlayer), this.spesificGame.getResignWinner(currPlayer) + " You Are The Winner !!!!!", ZERO);
                 //        addEvents(EventType.GAME_OVER, this.spesificGame.getCurrentPlayer().getName(), ZERO);
             } else {
                 doIterion();
             }
         }
+        this.timer.cancel();
 
     }
 
@@ -215,14 +216,14 @@ class MonopolyWS {
                 if (currPlayer.isInJail()) {
                     if ((diecResult[0] == diecResult[1])) { // if the dice reaut is double
                         currPlayer.setIsInJail(false); // update
-                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), true, "You Can Get Out From Jail In Your Next Turn!", ZERO);
+                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), currPlayer.getSqureNum(), true, "You Can Get Out From Jail In Your Next Turn!", ZERO);
                     } else if (currPlayer.isIsHaveGetOutOfJailCard()) {
                         addEventsWitheMsg(EventType.PLAYER_USED_GET_OUT_OF_JAIL_CARD, currPlayer.getName(), "You Use Your Get Out Of Jail Card", ZERO);
                         currentPlayerHaveGetOutCard(currPlayer);
                         isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
 
                     } else {
-                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), false, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
+                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), currPlayer.getSqureNum(), false, "You Can't Get Out From Jail! Wait One More Turn To Get One More Chanse!", ZERO);
                     }
                 } else {
                     isNeedToWait = makeMove(diecResult[0] + diecResult[1], true, currPlayer);
@@ -230,7 +231,7 @@ class MonopolyWS {
                 }
 
             } else {
-                addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), false, "You Are In Parkink,Please Wait One More Turn!", ZERO);
+                addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), currPlayer.getSqureNum(), false, "You Are In Parkink,Please Wait One More Turn!", ZERO);
 
             }
             // cheacke if player is still in the game - or remove player from game list
@@ -308,9 +309,10 @@ class MonopolyWS {
     public boolean makeMove(int numOfSteps, boolean isCanPasStart, Player currentPlayer) throws Exception {
         boolean isNeedToWait = false;
         String msg = "";
+
         currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
         SquareBase currentSqure = this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(currentPlayer.getSqureNum());
-        addEventsMove(EventType.MOVE, currentPlayer.getName(), currentPlayer.getSqureNum(), true, "", ZERO);
+        addEventsMove(EventType.MOVE, currentPlayer.getName(), currentPlayer.getSqureNum() - numOfSteps, currentPlayer.getSqureNum(), true, "", ZERO);
 
         currentSqure.stepOnMe(currentPlayer); //the square after movment 
 
@@ -387,11 +389,12 @@ class MonopolyWS {
         this.events.add(eventToAdd);
     }
 
-    private void addEventsMove(EventType type, String playerName, int squreNum, boolean isPlayerMove, String msg, int timoutCount) {
+    private void addEventsMove(EventType type, String playerName, int squreNum, int nextSqureNum, boolean isPlayerMove, String msg, int timoutCount) {
         Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timoutCount);
-        eventToAdd.setNextBoardSquareID(squreNum);
+        eventToAdd.setNextBoardSquareID(nextSqureNum);
         eventToAdd.setPlayerMove(isPlayerMove);
         eventToAdd.setEventMessage(msg);
+        eventToAdd.setBoardSquareID(squreNum);
         this.events.add(eventToAdd);
     }
 

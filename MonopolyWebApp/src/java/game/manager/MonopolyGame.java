@@ -145,7 +145,7 @@ public class MonopolyGame {
             if (this.players.get(i).isResign()) {
                 this.players.get(i).setIsNeedToQuit(true);
                 handelPlayerPresence(this.players.get(i));
-                joinNumber--;
+                //joinNumber--;
                 break;
             }
         }
@@ -175,8 +175,14 @@ public class MonopolyGame {
         return name;
     }
 
-    public String getResignWinner() {
-        String winner = this.getPlayers().get(0).getName();
+    public String getResignWinner(Player playerResing) {
+        String winner = "";
+        for (Player player : this.getPlayers()) {
+            if (!player.equals(playerResing)) {
+                winner = player.getName();
+            }
+        }
+
         return winner;
     }
 
@@ -185,7 +191,7 @@ public class MonopolyGame {
         if (player.isQuit()) {
             // update all the assetes that the player owned
             monopolyGame.removePlayerrFromTheGame(player);
-            this.players.remove(this.pleyerIndex);
+            this.players.remove(player);
             this.pleyerIndex = this.pleyerIndex - 1;
 
             if (player.isHumen()) {
@@ -233,4 +239,5 @@ public class MonopolyGame {
         return this.players.get(index);
     }
 
+  
 }

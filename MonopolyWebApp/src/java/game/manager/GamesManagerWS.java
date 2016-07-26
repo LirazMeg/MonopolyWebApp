@@ -80,7 +80,7 @@ public class GamesManagerWS {
         return br.toString();
     }
 
-   public java.lang.String getBoardXML() {
+    public java.lang.String getBoardXML() {
         BufferedReader br = null;
         StringBuilder sb = new StringBuilder();
         try {
@@ -90,36 +90,39 @@ public class GamesManagerWS {
             FileReader dir = new FileReader(input);
             br = new BufferedReader(dir);
             String line;
-            
 
             while ((line = br.readLine()) != null) {
                 sb.append(line.trim());
-                
+
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
         return sb.toString();
     }
 
-    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) {
+    public void createGame(int computerizedPlayers, int humanPlayers, java.lang.String name) throws DuplicateGameName_Exception, InvalidParameters_Exception {
         MonopolyWS currentGame;
-        try {
-            if (gamesContainer.containsKey(name)) {
-                throw new DuplicateGameName_Exception("Game with same name allready exists.", null);
-            } else if (name != null && "".equals(name)) {
-                throw new InvalidParameters_Exception("Invalid input(name)", null);
-            } else {
+
+        if (gamesContainer.containsKey(name)) {
+            throw new DuplicateGameName_Exception("Game with same name allready exists.", null);
+        } else if (name != null && "".equals(name)) {
+            throw new InvalidParameters_Exception("Invalid input(name)", null);
+        } else {
+            try {
                 currentGame = new MonopolyWS();
+
                 currentGame.createGame(computerizedPlayers, humanPlayers, name);
                 gamesContainer.put(name, currentGame);// add game to continer 
                 System.out.println("Game Inserted");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(GamesManagerWS.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + e.getStackTrace().toString());
         }
 
     }
@@ -147,11 +150,11 @@ public class GamesManagerWS {
         MonopolyWS currentGame;
 
         if (!gamesContainer.containsKey(gameName)) {
-            throw new GameDoesNotExists_Exception("Game is not exists.", null);
+            throw new GameDoesNotExists_Exception(gameName + ",this game is not exists.", null);
         } else {
             currentGame = gamesContainer.get(gameName);
             if (!currentGame.isGameWait()) {
-                throw new InvalidParameters_Exception("Game status isn't wait.", null);
+                throw new InvalidParameters_Exception(gameName + " this game status isn't wait.", null);
             } else if (currentGame.isPlayerNameExist(playerName)) {
                 throw new InvalidParameters_Exception("The name " + playerName + " is already exist.", null);
             } else {
@@ -196,11 +199,11 @@ public class GamesManagerWS {
                     currGame = this.gamesContainer.get(gameName);
                     Player currPlayer = this.playersContainer.get(playerID);
                     int sizeOfEvents = currGame.getEventListSize();
-                    
+
                     if (eventID > sizeOfEvents && eventID < 0) {
                         throw new InvalidParameters_Exception("Iligal event.", null);
                     } else {
-                        List<Event> events = currGame.getEvents(eventID-1);
+                        List<Event> events = currGame.getEvents(eventID - 1);
                         if (events.size() != 1) {
                             throw new InvalidParameters_Exception("Iligal event.", null);
                         } else {
@@ -212,7 +215,7 @@ public class GamesManagerWS {
             } else {
                 //do nothing
             }
-            
+
             gameName = this.playersIdAsGameName.get(playerID);
             currGame = this.gamesContainer.get(gameName);
             currGame.doIterion();

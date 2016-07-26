@@ -12,8 +12,8 @@
 
             <country name="Brazil">
                 <city name="Brasilia" cost="380" houseCost="75" stayCost="180" stayCost1="30" stayCost2="40" stayCost3="80" />
-                <city name="Rio De Janeiro" cost="900" houseCost="100" stayCost="100" stayCost1="40" stayCost2="60" stayCost3="70" />
-                <city name="Sao Paulo" cost="450" houseCost="100" stayCost="190" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Rio_De_Janeiro" cost="900" houseCost="100" stayCost="100" stayCost1="40" stayCost2="60" stayCost3="70" />
+                <city name="Sao_Paulo" cost="450" houseCost="100" stayCost="190" stayCost1="40" stayCost2="60" stayCost3="70" />
             </country>
             
             <country name="Canada">
