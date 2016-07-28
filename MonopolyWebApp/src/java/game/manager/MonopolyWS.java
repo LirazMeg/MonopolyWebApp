@@ -309,10 +309,11 @@ class MonopolyWS {
     public boolean makeMove(int numOfSteps, boolean isCanPasStart, Player currentPlayer) throws Exception {
         boolean isNeedToWait = false;
         String msg = "";
+        int numSqureBeforMove=currentPlayer.getSqureNum();
 
         currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
         SquareBase currentSqure = this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(currentPlayer.getSqureNum());
-        addEventsMove(EventType.MOVE, currentPlayer.getName(), currentPlayer.getSqureNum() - numOfSteps, currentPlayer.getSqureNum(), true, "", ZERO);
+        addEventsMove(EventType.MOVE, currentPlayer.getName(), numSqureBeforMove, currentPlayer.getSqureNum(), true, "", ZERO);
 
         currentSqure.stepOnMe(currentPlayer); //the square after movment 
 
@@ -460,7 +461,7 @@ class MonopolyWS {
                         String msg = "  Do You Want To Buy House Number " + citySquar.getCounterOfHouse() + 1 + " (price " + citySquar.getHouseCost() + ", you have: " + currentPlayer.getAmount() + ") ?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMPT_PLAYER_TO_BY_HOUSE, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-                        timing();
+                        // timing();
                     } else {
                         buyHouse(citySquar, currentPlayer, squreNum);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
@@ -472,7 +473,7 @@ class MonopolyWS {
                         String msg = "Do You Want To Buy " + citySquar.getName() + " (price " + citySquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                         addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                         isNeedToWait = true;
-                        timing();
+                        // timing();
                     } else {
                         String msg = buyCity(square, currentPlayer);
                         addEventsBought(EventType.ASSET_BOUGHT, currentPlayer.getName(), squreNum, msg, ZERO);
@@ -489,7 +490,7 @@ class MonopolyWS {
                     String msg = "Do You Want To Buy " + assetSquar.getName() + " (price " + assetSquar.getCost() + ", your amount: " + currentPlayer.getAmount() + ")?";
                     addEventsPropmtPlayerToBuy(EventType.PROPMT_PLAYER_TO_BY_ASSET, currentPlayer.getName(), msg, currentPlayer.getSqureNum(), -1);
                     isNeedToWait = true;
-                    timing();
+                    // timing();
                 } else {
                     buyTrnsportionOrUtility(square, currentPlayer.getSqureNum(), currentPlayer);
                 }
