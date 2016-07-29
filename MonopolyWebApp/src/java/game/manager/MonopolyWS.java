@@ -209,7 +209,7 @@ class MonopolyWS {
         boolean isGameOver = this.spesificGame.checkIfIsGameOver();
         boolean isNeedToWait = false;
         while (!isGameOver && !isNeedToWait) {
-            addEvents(EventType.PLAYER_TURN, currPlayer.getName(), ZERO);
+            addEventsPlayerTurn(EventType.PLAYER_TURN, currPlayer.getName(), currPlayer.getSqureNum(), ZERO);
             if (!currPlayer.isInParking()) {
                 int[] diecResult = this.spesificGame.rollTheDice();
                 addEventsDiseRoll(EventType.DICE_ROLL, currPlayer.getName(), diecResult);
@@ -309,7 +309,7 @@ class MonopolyWS {
     public boolean makeMove(int numOfSteps, boolean isCanPasStart, Player currentPlayer) throws Exception {
         boolean isNeedToWait = false;
         String msg = "";
-        int numSqureBeforMove=currentPlayer.getSqureNum();
+        int numSqureBeforMove = currentPlayer.getSqureNum();
 
         currentPlayer.move(numOfSteps, isCanPasStart); //cheng player squreNum
         SquareBase currentSqure = this.spesificGame.getMonopolyGame().getBoard().getSqureBaseBySqureNum(currentPlayer.getSqureNum());
@@ -395,6 +395,12 @@ class MonopolyWS {
         eventToAdd.setNextBoardSquareID(nextSqureNum);
         eventToAdd.setPlayerMove(isPlayerMove);
         eventToAdd.setEventMessage(msg);
+        eventToAdd.setBoardSquareID(squreNum);
+        this.events.add(eventToAdd);
+    }
+
+    private void addEventsPlayerTurn(EventType type, String playerName, int squreNum, int timountCount) {
+        Event eventToAdd = UtilitiesWS.createEvent(events.size(), type, playerName, timountCount);
         eventToAdd.setBoardSquareID(squreNum);
         this.events.add(eventToAdd);
     }
