@@ -216,7 +216,7 @@ class MonopolyWS {
                 if (currPlayer.isInJail()) {
                     if ((diecResult[0] == diecResult[1])) { // if the dice reaut is double
                         currPlayer.setIsInJail(false); // update
-                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), currPlayer.getSqureNum(), true, "You Can Get Out From Jail In Your Next Turn!", ZERO);
+                        addEventsMove(EventType.MOVE, currPlayer.getName(), currPlayer.getSqureNum(), currPlayer.getSqureNum(), false, "You Can Get Out From Jail In Your Next Turn!", ZERO);
                     } else if (currPlayer.isIsHaveGetOutOfJailCard()) {
                         addEventsWitheMsg(EventType.PLAYER_USED_GET_OUT_OF_JAIL_CARD, currPlayer.getName(), "You Use Your Get Out Of Jail Card", ZERO);
                         currentPlayerHaveGetOutCard(currPlayer);
@@ -342,7 +342,7 @@ class MonopolyWS {
                 addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), paymentToPlayerName, (-1) * (int) stayCost, ZERO, msg);
             } else if (currentPlayer.isIsPlayerCanBuySquare()) { //has the option to buy 
                 if (currentPlayer.isPlayerHaveTheMany(currentSquareType.getAsset().getCost())) {
-                    isNeedToWait = buyingAssetOffer(currentSquareType, this.spesificGame.getCurrentPlayer().getSqureNum());
+                    isNeedToWait = buyingAssetOffer(currentSquareType, currentPlayer.getSqureNum());
 
                 } else {
 
@@ -472,7 +472,7 @@ class MonopolyWS {
                         buyHouse(citySquar, currentPlayer, squreNum);
                         citySquar.setCounterOfHouse(citySquar.getCounterOfHouse() + 1);
                         int cost = (int) citySquar.getHouseCost();
-                        addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), "", (-1) * cost, ZERO, "You Just Pay To Treasury " + cost + "Nis.");
+                        addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), " ", (-1) * cost, ZERO, "You Just Pay To Treasury " + cost + "Nis.");
                     }
                 } else if (checkIfPlayerCanBuyCity(square)) {
                     if (currentPlayer.isHumen()) {
@@ -484,7 +484,7 @@ class MonopolyWS {
                         String msg = buyCity(square, currentPlayer);
                         addEventsBought(EventType.ASSET_BOUGHT, currentPlayer.getName(), squreNum, msg, ZERO);
                         int cost = (int) citySquar.getCost();
-                        addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), "", (-1) * cost, ZERO, "You Just Pay To Treasury " + cost + "Nis.");
+                        addEventsPayment(EventType.PAYMENT, currentPlayer.getName(), " ", (-1) * cost, ZERO, "You Just Pay To Treasury " + cost + "Nis.");
                     }
                 }
                 break;
@@ -642,7 +642,7 @@ class MonopolyWS {
                 throw new AssertionError(event.getType().name());
         }
         String msg = "You Just Pay To Treasury " + cost + " Nis";
-        addEventsPayment(EventType.PAYMENT, player.getName(), "", (-1) * cost, ZERO, msg);
+        addEventsPayment(EventType.PAYMENT, player.getName(), " ", (-1) * cost, ZERO, msg);
     }
 
     private void buyAsset(Player player, SquareType square, int squreNum) {

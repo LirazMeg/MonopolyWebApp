@@ -19,9 +19,7 @@ public class StartSquare extends SquareBase {
 
     @Override
     public void stepOnMe(Player pleyer) {
-
         pleyer.addToAmount(START_BONUS);
-        //ConsolUI.msgStepOnStartSqure();
     }
 
     @Override
