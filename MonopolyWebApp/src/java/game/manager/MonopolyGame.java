@@ -187,7 +187,6 @@ public class MonopolyGame {
     }
 
     public void handelPlayerPresence(Player player) {
-        // if (player.isResign() || player.isQuit()) {
         if (player.isQuit()) {
             // update all the assetes that the player owned
             monopolyGame.removePlayerrFromTheGame(player);

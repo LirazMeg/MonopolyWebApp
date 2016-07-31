@@ -282,7 +282,8 @@ public class MonopolyModel {
         }
 
         public models.SquareBase getSqureBaseBySqureNum(int squreNum) {
-            return this.content.get(squreNum);
+               models.SquareBase toReturn = this.content.get(squreNum);
+            return toReturn;
         }
 
         public int getNumberOfStepstToSquareByType(int squreNum, String squareBaseName) {
